@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projektaufnahme Touristische Grundstückssuche</title>
+<meta name="description" content="Projektaufnahmebogen zur Erfassung von Standortanforderungen für touristische Entwicklungsprojekte.">
+<style>
+:root{
+  --brand:#1f5fa9;
+  --brand-dark:#16457a;
+  --brand-light:#e8f0fb;
+  --accent:#0f9d8f;
+  --bg:#f4f6fa;
+  --surface:#ffffff;
+  --line:#e2e7f0;
+  --line-strong:#cbd4e3;
+  --text:#1b2433;
+  --muted:#5f6b80;
+  --faint:#8b96a8;
+  --danger:#c0392b;
+  --danger-bg:#fdecea;
+  --ok:#1e8e5a;
+  --warn:#b7791f;
+  --radius:14px;
+  --radius-sm:9px;
+  --shadow-sm:0 1px 2px rgba(20,35,60,.06),0 1px 3px rgba(20,35,60,.05);
+  --shadow:0 2px 6px rgba(20,35,60,.06),0 10px 30px rgba(20,35,60,.07);
+  --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.01em}
+button{font-family:inherit}
+a{color:var(--brand)}
+
+/* ---------- Layout ---------- */
+.app{max-width:1240px;margin:0 auto;padding:0 20px 64px}
+
+.topbar{
+  background:linear-gradient(135deg,#16457a 0%,#1f5fa9 55%,#2b7fc4 100%);
+  color:#fff;
+  padding:26px 0 22px;
+  box-shadow:var(--shadow-sm);
+}
+.topbar-inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand-mark{
+  width:46px;height:46px;flex:none;border-radius:12px;
+  background:rgba(255,255,255,.16);
+  display:grid;place-items:center;border:1px solid rgba(255,255,255,.25)
+}
+.brand-mark svg{width:26px;height:26px;stroke:#fff}
+.brand h1{font-size:21px;line-height:1.25}
+.brand p{margin:2px 0 0;font-size:13.5px;color:rgba(255,255,255,.82)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid transparent;border-radius:9px;
+  padding:9px 14px;font-size:13.5px;font-weight:600;
+  cursor:pointer;background:#fff;color:var(--brand-dark);
+  transition:.15s ease;white-space:nowrap;
+}
+.btn svg{width:16px;height:16px;stroke:currentColor;flex:none}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.btn:active{transform:none}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-dark)}
+.btn-outline{background:#fff;border-color:var(--line-strong);color:var(--text)}
+.btn-outline:hover{border-color:var(--brand);color:var(--brand)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ---------- Progress ---------- */
+.progress-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);padding:18px 20px;margin-top:-14px;position:relative;z-index:2;
+}
+.progress-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.progress-head strong{font-size:14px}
+.progress-head span{font-size:13px;color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:#e9edf5;overflow:hidden}
+.bar-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--brand) 0%,var(--accent) 100%);transition:width .35s cubic-bezier(.4,0,.2,1)}
+.steplist{display:flex;gap:6px;overflow-x:auto;margin-top:14px;padding-bottom:4px;scrollbar-width:thin}
+.steplist button{
+  flex:none;border:1px solid var(--line);background:#fff;color:var(--muted);
+  border-radius:99px;padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.15s
+}
+.steplist button:hover{border-color:var(--brand);color:var(--brand)}
+.steplist button.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.steplist button.done{border-color:#bfe3d2;background:#f0faf5;color:var(--ok)}
+.steplist button.done.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.steplist .num{font-variant-numeric:tabular-nums;opacity:.75}
+
+/* ---------- Card ---------- */
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-top:22px;overflow:hidden;
+}
+.card-head{padding:24px 28px 18px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:flex-start}
+.card-icon{width:44px;height:44px;flex:none;border-radius:11px;background:var(--brand-light);display:grid;place-items:center}
+.card-icon svg{width:23px;height:23px;stroke:var(--brand)}
+.card-head h2{font-size:19px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:3px}
+.card-head p{margin:4px 0 0;color:var(--muted);font-size:13.5px;max-width:70ch}
+.card-body{padding:26px 28px 30px;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- Fields ---------- */
+.grid{display:grid;gap:20px 22px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid .full{grid-column:1/-1}
+.field label.lbl{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px}
+.req{color:var(--danger);margin-left:2px}
+.hint{display:block;font-weight:400;color:var(--faint);font-size:12.5px;margin-top:2px}
+input[type=text],input[type=tel],input[type=email],input[type=number],textarea,select{
+  width:100%;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  font-size:14.5px;font-family:inherit;color:var(--text);background:#fff;transition:.15s
+}
+textarea{min-height:130px;resize:vertical;line-height:1.6}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(31,95,169,.14)}
+.invalid input,.invalid textarea,.invalid select,.invalid .optgroup{border-color:var(--danger)!important;background:#fffafa}
+.err{display:none;color:var(--danger);font-size:12.5px;margin-top:6px;font-weight:600}
+.invalid .err{display:block}
+
+/* option chips (radio / checkbox) */
+.opts{display:flex;flex-wrap:wrap;gap:9px}
+.opts.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.opt{
+  display:flex;align-items:center;gap:9px;cursor:pointer;
+  border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  padding:9px 13px;font-size:14px;background:#fff;transition:.15s;user-select:none
+}
+.opt:hover{border-color:var(--brand);background:#fbfcfe}
+.opt input{accent-color:var(--brand);width:16px;height:16px;flex:none;margin:0}
+.opt.sel{border-color:var(--brand);background:var(--brand-light);color:var(--brand-dark);font-weight:600}
+.optgroup{border:1px solid transparent;border-radius:var(--radius-sm)}
+
+/* sliders */
+.sliders{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.slider-row{border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 15px;background:#fcfdff}
+.slider-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.slider-top .name{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.slider-top .name svg{width:16px;height:16px;stroke:var(--brand);flex:none}
+.pill{
+  font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;
+  background:var(--brand-light);color:var(--brand-dark);white-space:nowrap;font-variant-numeric:tabular-nums
+}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:22px;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:linear-gradient(90deg,var(--brand) var(--pct,0%),#e4e9f2 var(--pct,0%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:#e4e9f2}
+input[type=range]::-moz-range-progress{height:6px;border-radius:99px;background:var(--brand)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-6px;border-radius:50%;background:#fff;border:2px solid var(--brand);box-shadow:var(--shadow-sm);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--brand);cursor:pointer}
+.scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--faint);margin-top:2px}
+
+/* matrix */
+.matrix{width:100%;border-collapse:collapse;font-size:14px}
+.matrix th,.matrix td{padding:11px 12px;text-align:center;border-bottom:1px solid var(--line)}
+.matrix th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;background:#f8fafd}
+.matrix th:first-child,.matrix td:first-child{text-align:left;font-weight:600}
+.matrix tbody tr:hover{background:#fbfcfe}
+.matrix input{accent-color:var(--brand);width:17px;height:17px;cursor:pointer}
+.matrix .cellname{display:flex;align-items:center;gap:9px}
+.matrix .cellname svg{width:17px;height:17px;stroke:var(--brand);flex:none}
+.matrix-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-sm)}
+.matrix tbody tr:last-child td{border-bottom:none}
+
+/* section subhead */
+.subhead{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:4px 0 12px}
+.note{background:#f8fafd;border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:var(--radius-sm);padding:12px 15px;font-size:13.5px;color:var(--muted)}
+
+/* ---------- Footer nav ---------- */
+.navbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 28px;border-top:1px solid var(--line);background:#fafbfd;flex-wrap:wrap}
+.saved{font-size:12.5px;color:var(--faint);display:flex;align-items:center;gap:6px}
+.saved svg{width:14px;height:14px;stroke:var(--ok)}
+.nav-actions{display:flex;gap:9px}
+
+/* ---------- Summary ---------- */
+.sum-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.sum-card{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:#fff;break-inside:avoid}
+.sum-card h3{display:flex;align-items:center;gap:9px;font-size:14.5px;padding:13px 16px;background:#f8fafd;border-bottom:1px solid var(--line)}
+.sum-card h3 svg{width:18px;height:18px;stroke:var(--brand)}
+.sum-body{padding:6px 16px 12px}
+.kv{display:flex;gap:14px;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--muted);flex:1 1 45%}
+.kv .v{font-weight:600;text-align:right;flex:1 1 55%;word-break:break-word}
+.kv .v.empty{color:var(--faint);font-weight:400;font-style:italic}
+.tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.kv.has-tags{flex-direction:column;align-items:stretch;gap:6px}
+.kv.has-tags .k{flex:none}
+.kv.has-tags .tags{justify-content:flex-start}
+.tag{background:var(--brand-light);color:var(--brand-dark);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600}
+.tag.red{background:var(--danger-bg);color:var(--danger)}
+.tag.green{background:#eaf7f0;color:var(--ok)}
+.tag.amber{background:#fdf5e6;color:var(--warn)}
+.rank{display:flex;flex-direction:column;gap:7px;padding:4px 0 8px}
+.rank-row{display:grid;grid-template-columns:minmax(120px,1.2fr) 1fr 34px;align-items:center;gap:10px;font-size:13px}
+.rank-bar{height:7px;border-radius:99px;background:#eaeef5;overflow:hidden}
+.rank-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--brand),var(--accent))}
+.rank-val{text-align:right;font-weight:700;font-size:12.5px;color:var(--brand-dark);font-variant-numeric:tabular-nums}
+.freetext{background:#f8fafd;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:13.5px;white-space:pre-wrap;color:var(--text);margin:4px 0 10px}
+.sum-hero{border:1px solid var(--line);border-radius:var(--radius-sm);background:linear-gradient(135deg,#f4f8fd,#fbfcfe);padding:20px 22px;margin-bottom:20px}
+.sum-hero h3{font-size:20px;margin-bottom:4px}
+.sum-hero p{margin:0;color:var(--muted);font-size:13.5px}
+.stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:16px}
+.stat .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);font-weight:700}
+.stat .val{font-size:16px;font-weight:700;margin-top:2px}
+
+/* ---------- Banner / Toast / Modal ---------- */
+.banner{
+  display:none;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:#fff8e8;border:1px solid #f0dcae;border-left:4px solid var(--warn);
+  border-radius:var(--radius-sm);padding:14px 18px;margin-top:18px;font-size:13.5px
+}
+.banner.show{display:flex}
+.banner .txt{display:flex;gap:11px;align-items:center}
+.banner svg{width:20px;height:20px;stroke:var(--warn);flex:none}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);
+  background:#1b2433;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;
+  box-shadow:0 12px 34px rgba(0,0,0,.25);z-index:99;transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;gap:9px;max-width:90vw
+}
+.toast.show{transform:translate(-50%,0)}
+.toast svg{width:17px;height:17px;stroke:#6ee7b7}
+.toast.err svg{stroke:#fca5a5}
+.modal{position:fixed;inset:0;background:rgba(19,28,42,.55);display:none;place-items:center;z-index:100;padding:20px}
+.modal.show{display:grid}
+.modal-box{background:#fff;border-radius:var(--radius);max-width:520px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden}
+.modal-box header{padding:20px 24px 0}
+.modal-box h3{font-size:17px}
+.modal-box p{color:var(--muted);font-size:14px;padding:0 24px;margin:8px 0 0}
+.modal-box footer{display:flex;justify-content:flex-end;gap:9px;padding:20px 24px}
+
+/* ---------- Print ---------- */
+@media print{
+  @page{margin:14mm}
+  body{background:#fff;font-size:11.5pt}
+  .topbar{background:#fff;color:#000;border-bottom:2px solid #1f5fa9;padding:0 0 10px;box-shadow:none}
+  .brand-mark{display:none}
+  .brand h1{font-size:18pt;color:#16457a}
+  .brand p{color:#555}
+  .toolbar,.steplist,.navbar,.banner,.progress-card,.toast,.modal,.no-print{display:none!important}
+  .app{padding:0;max-width:none}
+  .card{box-shadow:none;border:none;margin:0}
+  .card-head{padding:14px 0 10px}
+  .card-body{padding:0;animation:none}
+  .card-icon{display:none}
+  .sum-grid{grid-template-columns:repeat(2,1fr)}
+  .sum-card,.sum-hero{break-inside:avoid;page-break-inside:avoid}
+  a{text-decoration:none;color:#000}
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .sliders{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  body{font-size:14.5px}
+  .app{padding:0 13px 48px}
+  .topbar-inner{padding:0 13px}
+  .brand h1{font-size:18px}
+  .card-head,.card-body{padding-left:17px;padding-right:17px}
+  .navbar{padding:14px 17px}
+  .toolbar{width:100%}
+  .toolbar .btn{flex:1 1 auto;justify-content:center}
+  .nav-actions{width:100%}
+  .nav-actions .btn{flex:1;justify-content:center}
+  .navbar{flex-direction:column-reverse;align-items:stretch}
+  .saved{justify-content:center}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20V9l7-5 7 5v11"/><path d="M10 20v-6h4v6"/></svg>
+      </div>
+      <div>
+        <h1>Projektaufnahme Touristische Grundstückssuche</h1>
+        <p>Standortanforderungen für touristische Entwicklungsprojekte</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn btn-ghost" id="btnDemo" type="button" title="Formular mit Beispielwerten befüllen">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13H11l-1 9 8.5-11H12z"/></svg>Demo-Modus</button>
+      <button class="btn btn-ghost" id="btnSummary" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M3 6h.01M3 12h.01M3 18h.01"/></svg>Zusammenfassung</button>
+      <button class="btn" id="btnJson" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Als JSON exportieren</button>
+      <button class="btn" id="btnPrint" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>PDF drucken</button>
+      <button class="btn btn-ghost" id="btnReset" type="button" title="Alle Eingaben verwerfen">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Zurücksetzen</button>
+    </div>
+  </div>
+</header>
+
+<main class="app">
+  <div class="banner" id="restoreBanner">
+    <div class="txt">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+      <div><strong>Gespeicherter Zwischenstand gefunden.</strong><br><span id="restoreInfo"></span></div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-primary" id="btnRestore" type="button">Wiederherstellen</button>
+      <button class="btn btn-outline" id="btnDiscard" type="button">Verwerfen</button>
+    </div>
+  </div>
+
+  <section class="progress-card" aria-label="Fortschritt">
+    <div class="progress-head">
+      <strong id="progTitle">Schritt 1 von 15 · Projektstammdaten</strong>
+      <span id="progPct">0 % abgeschlossen</span>
+    </div>
+    <div class="bar"><div class="bar-fill" id="progFill"></div></div>
+    <nav class="steplist" id="stepList"></nav>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="card-icon" id="cardIcon"></div>
+      <div>
+        <div class="eyebrow" id="cardEyebrow">Schritt 1 / 15</div>
+        <h2 id="cardTitle"></h2>
+        <p id="cardDesc"></p>
+      </div>
+    </div>
+    <form class="card-body" id="cardBody" novalidate></form>
+    <div class="navbar no-print">
+      <div class="saved" id="savedInfo"></div>
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="btnPrev" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Zurück</button>
+        <button class="btn btn-primary" id="btnNext" type="button">Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <header><h3 id="modalTitle"></h3></header>
+    <p id="modalText"></p>
+    <footer>
+      <button class="btn btn-outline" id="modalCancel" type="button">Abbrechen</button>
+      <button class="btn btn-primary" id="modalOk" type="button">Bestätigen</button>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   Icons
+   ============================================================ */
+const P = {
+building:'<path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M15 21V9h4a2 2 0 0 1 2 2v10"/><path d="M9 7h2M9 11h2M9 15h2"/>',
+id:'<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><circle cx="9" cy="11" r="2.2"/><path d="M5.5 16.5c.7-1.6 2-2.3 3.5-2.3s2.8.7 3.5 2.3"/><path d="M15.5 9.5h3.5M15.5 13h3.5"/>',
+doc:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>',
+ruler:'<path d="m14.5 2.5 7 7-12 12-7-7z"/><path d="m7 10 2 2M10 7l2 2M4 13l2 2"/>',
+map:'<path d="m9 4-6 2.5v14L9 18l6 2.5 6-2.5v-14L15 6.5z"/><path d="M9 4v14M15 6.5v14"/>',
+mountain:'<path d="m3 19 6.5-11 4 6 2.5-4 5 9z"/><circle cx="17" cy="6" r="2"/>',
+car:'<path d="M5 16.5h14"/><path d="M6.5 16.5V19a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-2.5"/><path d="M20.5 16.5V19a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-2.5"/><path d="M3 16.5v-4l2-5.5a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 7l2 5.5v4z"/><path d="M6 12.5h2M16 12.5h2"/>',
+plug:'<path d="M9 3v6M15 3v6"/><path d="M6 9h12v3a6 6 0 0 1-12 0z"/><path d="M12 18v3"/>',
+stamp:'<path d="M9 3h6a2 2 0 0 1 2 2l-1 6H8L7 5a2 2 0 0 1 2-2z"/><path d="M4 14h16v3H4z"/><path d="M4 20h16"/>',
+land:'<path d="M2 20h20"/><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-5h6v5"/>',
+hands:'<path d="M3 12.5 7 9l4 3 3-2.5 4 3"/><path d="M2 15.5 7 12l4 3 3-2.5 5 3.5"/><path d="M14 6.5 17 4l4 3"/>',
+alert:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+euro:'<circle cx="12" cy="12" r="9.5"/><path d="M16 8.5a4.5 4.5 0 0 0-7.3 1.2A6 6 0 0 0 8.3 15 4.5 4.5 0 0 0 16 15.7"/><path d="M6.5 11h6M6.5 13.5h5"/>',
+ban:'<circle cx="12" cy="12" r="9.5"/><path d="m5.5 5.5 13 13"/>',
+target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+list:'<path d="M8 6h12M8 12h12M8 18h12M3 6h.01M3 12h.01M3 18h.01"/>',
+leaf:'<path d="M4 20c0-9 6-14 16-15 0 9-5.5 14-13 14z"/><path d="M4 20c3-4 6-6.5 10-8.5"/>',
+eye:'<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.7"/>',
+wave:'<path d="M2 8.5c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/><path d="M2 13.5c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/><path d="M2 18.5c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/>',
+tree:'<path d="M12 3 6.5 11h3L5 17h14l-4.5-6h3z"/><path d="M12 17v4"/>',
+pin:'<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+ticket:'<path d="M3 8.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V10a2 2 0 0 0 0 4v1.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V14a2 2 0 0 0 0-4z"/><path d="M13 6.5v11"/>',
+thermal:'<path d="M10 13V5a2 2 0 1 1 4 0v8a4.5 4.5 0 1 1-4 0z"/><circle cx="12" cy="17" r="1.6"/>',
+ski:'<path d="m4 20 14-14"/><path d="M6 4 20 18"/><path d="M3 20h18"/>',
+bike:'<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M9 17h4l4-8h-3"/><path d="M9 9h4l2 4"/>',
+boot:'<path d="M8 3v9l-3 3.5V20h14v-3l-6-3V3z"/>',
+drop:'<path d="M12 3.5c3.5 4 6 6.7 6 9.5a6 6 0 1 1-12 0c0-2.8 2.5-5.5 6-9.5z"/>',
+pipe:'<path d="M3 9h8V5m0 14v-4H3"/><path d="M13 5h4a4 4 0 0 1 0 8h-4"/><path d="M13 19h8"/>',
+wifi:'<path d="M2.5 9a15 15 0 0 1 19 0"/><path d="M6 12.5a10 10 0 0 1 12 0"/><path d="M9.5 16a5 5 0 0 1 5 0"/><path d="M12 19.5h.01"/>',
+flame:'<path d="M12 21a6 6 0 0 0 6-6c0-4-3-5.5-3-9-2.5 1.5-3 4-3 4s-1-1.5-1-3c-2 1.5-5 4-5 8a6 6 0 0 0 6 6z"/>',
+road:'<path d="M6 3 4 21M18 3l2 18"/><path d="M12 4v3M12 10v3M12 16v3"/>',
+water:'<path d="M3 15c2.5-2 4.5-2 7 0s4.5 2 7 0 3-1.4 4-1.6"/><path d="M3 19.5c2.5-2 4.5-2 7 0s4.5 2 7 0 3-1.4 4-1.6"/><path d="M7 10.5 12 3l5 7.5"/>',
+bolt:'<path d="M13 2 4.5 13H11l-1 9 8.5-11H12z"/>',
+shield:'<path d="M12 22s8-3.5 8-10V5.5L12 2.5 4 5.5V12c0 6.5 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+check:'<path d="M20 6 9 17l-5-5"/>',
+clock:'<circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/>'
+};
+function svg(n){ return '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(P[n]||P.check)+'</svg>'; }
+
+/* ============================================================
+   Konstanten
+   ============================================================ */
+const BEZIRKE = ["Braunau am Inn","Eferding","Freistadt","Gmunden","Grieskirchen","Kirchdorf an der Krems","Linz (Stadt)","Linz-Land","Perg","Ried im Innkreis","Rohrbach","Schärding","Steyr (Stadt)","Steyr-Land","Urfahr-Umgebung","Vöcklabruck","Wels (Stadt)","Wels-Land"];
+const WICHTIG = {1:"unwichtig",2:"gering",3:"neutral",4:"wichtig",5:"sehr wichtig"};
+const STORE = "tgs_projektaufnahme_v1";
+
+/* ============================================================
+   Schrittdefinition
+   ============================================================ */
+const STEPS = [
+{
+  t:"Projektstammdaten", icon:"id", short:"Stammdaten",
+  d:"Grunddaten zum Projekt und zum Ansprechpartner für die Standortsuche.",
+  f:[
+    {n:"projektname", l:"Projektname", t:"text", req:true, ph:"z. B. Alpin Resort Traunsee", w:"half"},
+    {n:"unternehmen", l:"Unternehmen", t:"text", req:true, ph:"Firmenname", w:"half"},
+    {n:"ansprechpartner", l:"Ansprechpartner", t:"text", req:true, ph:"Vor- und Nachname", w:"half"},
+    {n:"telefon", l:"Telefon", t:"tel", ph:"+43 ...", w:"half"},
+    {n:"email", l:"E-Mail", t:"email", req:true, ph:"name@unternehmen.at", w:"half"},
+    {n:"projektstatus", l:"Projektstatus", t:"radio", req:true, w:"full", layout:"cols",
+     o:["Erste Idee","Standortsuche läuft","Machbarkeitsstudie vorhanden","Finanzierung in Vorbereitung","Investitionsentscheidung erfolgt"]}
+  ]
+},
+{
+  t:"Projektbeschreibung", icon:"doc", short:"Beschreibung",
+  d:"Art des touristischen Vorhabens und inhaltliche Kurzbeschreibung.",
+  f:[
+    {n:"projektart", l:"Projektart", hint:"Mehrfachauswahl möglich", t:"check", req:true, w:"full", layout:"cols",
+     o:["Hotel","Ferienhotel","Businesshotel","Gesundheitshotel","Chaletdorf","Ferienwohnungen","Resort","Campingplatz","Glamping","Freizeitattraktion","Gastronomie","Touristische Infrastruktur","Sonstiges"]},
+    {n:"kurzbeschreibung", l:"Kurzbeschreibung des Projektes", t:"area", req:true, w:"full",
+     ph:"Konzept, Zielgruppe, Betriebsform, geplante Kapazität, Besonderheiten …"}
+  ]
+},
+{
+  t:"Flächenanforderungen", icon:"ruler", short:"Fläche",
+  d:"Benötigte Grundstücksgröße und gewünschte bauliche Ausnutzung.",
+  f:[
+    {n:"groesse_min", l:"Mindestgröße", unit:"m²", t:"num", req:true, ph:"z. B. 8000", w:"half"},
+    {n:"groesse_ideal", l:"Idealgröße", unit:"m²", t:"num", req:true, ph:"z. B. 15000", w:"half"},
+    {n:"groesse_max", l:"Maximalgröße", unit:"m²", t:"num", ph:"z. B. 30000", w:"half"},
+    {n:"erweiterungsflaechen", l:"Erweiterungsflächen", t:"radio", req:true, w:"half", o:["Ja","Nein","Optional"]},
+    {n:"bebauungsgrad", l:"Bebauungsgrad", t:"radio", req:true, w:"full", o:["Hoch","Mittel","Gering","Offen"]}
+  ]
+},
+{
+  t:"Region", icon:"map", short:"Region",
+  d:"Räumliche Eingrenzung des Suchgebiets innerhalb Oberösterreichs.",
+  f:[
+    {n:"suchgebiet", l:"Suchgebiet", t:"radio", req:true, w:"full", o:["Ganz Oberösterreich","Individuelle Auswahl"]},
+    {n:"bezirke", l:"Bezirke Oberösterreich", hint:"Mehrfachauswahl", t:"check", req:true, w:"full", layout:"cols", o:BEZIRKE,
+     showIf:s => s.suchgebiet === "Individuelle Auswahl"},
+    {n:"bevorzugte_gemeinden", l:"Bevorzugte Gemeinden", hint:"Kommagetrennt oder je Zeile eine Gemeinde", t:"area", w:"half", small:true, ph:"Gmunden, Bad Ischl, Hallstatt …"},
+    {n:"ausgeschlossene_gemeinden", l:"Ausgeschlossene Gemeinden", hint:"Kommagetrennt oder je Zeile eine Gemeinde", t:"area", w:"half", small:true, ph:"…"},
+    {n:"suchradius", l:"Maximaler Suchradius", unit:"km", t:"num", w:"half", ph:"z. B. 40"}
+  ]
+},
+{
+  t:"Lageanforderungen", icon:"mountain", short:"Lage",
+  d:"Bewertung der Lagekriterien von 1 (unwichtig) bis 5 (sehr wichtig).",
+  f:[
+    {n:"lageanforderungen", t:"sliders", min:1, max:5, def:3, items:[
+      {n:"ruhelage", l:"Ruhelage", icon:"leaf"},
+      {n:"aussicht", l:"Aussicht", icon:"eye"},
+      {n:"seenaehe", l:"Seenähe", icon:"wave"},
+      {n:"berglage", l:"Berglage", icon:"mountain"},
+      {n:"waldnaehe", l:"Waldnähe", icon:"tree"},
+      {n:"ortszentrum", l:"Ortszentrum", icon:"pin"},
+      {n:"touristischer_hotspot", l:"Touristischer Hotspot", icon:"star"},
+      {n:"freizeitangebot", l:"Freizeitangebot", icon:"ticket"},
+      {n:"thermennaehe", l:"Thermennähe", icon:"thermal"},
+      {n:"skigebiet", l:"Skigebiet", icon:"ski"},
+      {n:"radwege", l:"Radwege", icon:"bike"},
+      {n:"wanderwege", l:"Wanderwege", icon:"boot"}
+    ]}
+  ]
+},
+{
+  t:"Verkehrsanbindung", icon:"car", short:"Verkehr",
+  d:"Erreichbarkeit des Standorts über Straße, Schiene und öffentlichen Verkehr.",
+  f:[
+    {n:"entfernung_autobahn", l:"Maximale Entfernung Autobahn", t:"radio", req:true, w:"half", o:["5 km","10 km","20 km","egal"]},
+    {n:"entfernung_bahnhof", l:"Maximale Entfernung Bahnhof", t:"radio", req:true, w:"half", o:["1 km","5 km","10 km","egal"]},
+    {n:"oeffentlicher_verkehr", l:"Öffentlicher Verkehr", t:"radio", req:true, w:"half", o:["Wichtig","Neutral","Unwichtig"]},
+    {n:"busanbindung", l:"Busanbindung erforderlich", t:"radio", req:true, w:"half", o:["Ja","Nein"]}
+  ]
+},
+{
+  t:"Infrastruktur", icon:"plug", short:"Infrastruktur",
+  d:"Technische Erschließung: Was muss vorhanden sein, was ist wünschenswert?",
+  f:[
+    {n:"infrastruktur", t:"matrix", req:true, o:["Muss vorhanden","Wünschenswert","Egal"], rows:[
+      {n:"strom", l:"Strom", icon:"bolt"},
+      {n:"wasser", l:"Wasser", icon:"drop"},
+      {n:"kanal", l:"Kanal", icon:"pipe"},
+      {n:"glasfaser", l:"Glasfaser", icon:"wifi"},
+      {n:"gas", l:"Gas", icon:"flame"},
+      {n:"zufahrtsstrasse", l:"Zufahrtsstraße", icon:"road"}
+    ]}
+  ]
+},
+{
+  t:"Widmung", icon:"stamp", short:"Widmung",
+  d:"Anforderungen an die raumordnungsrechtliche Ausgangslage.",
+  f:[
+    {n:"widmungen", l:"Bevorzugte Widmungen", hint:"Mehrfachauswahl", t:"check", req:true, w:"full", layout:"cols",
+     o:["Kurgebiet","Sondergebiet","Kerngebiet","Mischgebiet","Betriebsbaugebiet","Andere"]},
+    {n:"umwidmung", l:"Umwidmung zulässig", t:"radio", req:true, w:"full", o:["Nein","Ja","Nur im Einzelfall"]},
+    {n:"baureife", l:"Sofortige Baureife wichtig?", t:"sliders", min:1, max:5, def:3, w:"full",
+     items:[{n:"sofortige_baureife", l:"Sofortige Baureife", icon:"clock"}]}
+  ]
+},
+{
+  t:"Grundstückstyp", icon:"land", short:"Typ",
+  d:"Bevorzugte Ausgangssituation der Liegenschaft.",
+  f:[
+    {n:"grundstueckstyp", l:"Bevorzugter Grundstückstyp", t:"radio", req:true, w:"half", o:["Baulandreserve","Brache","Beides"]},
+    {n:"bestehende_gebaeude", l:"Bestehende Gebäude", t:"radio", req:true, w:"half", o:["Vorteil","Neutral","Nachteil"]},
+    {n:"abbruchobjekte", l:"Abbruchobjekte akzeptabel", t:"radio", req:true, w:"half", o:["Ja","Nein"]}
+  ]
+},
+{
+  t:"Entwicklungsbereitschaft", icon:"hands", short:"Bereitschaft",
+  d:"Erwartungen an Grundeigentümer und Standortgemeinde.",
+  f:[
+    {n:"verkaufsbereitschaft", l:"Verkaufsbereitschaft erforderlich", t:"radio", req:true, w:"full", o:["Ja (KO-Kriterium)","Wünschenswert","Egal"]},
+    {n:"gemeindeunterstuetzung", l:"Gemeindeunterstützung erforderlich", t:"radio", req:true, w:"full", o:["Ja","Wünschenswert","Egal"]},
+    {n:"zusammenarbeit_gemeinde", l:"Zusammenarbeit mit Gemeinde", t:"radio", req:true, w:"full", o:["Hoch","Mittel","Gering"]}
+  ]
+},
+{
+  t:"Risiken", icon:"alert", short:"Risiken",
+  d:"Bewertung standortbezogener Risiken und Gefährdungen.",
+  f:[
+    {n:"risiken", t:"matrix", req:true, o:["KO-Kriterium","Stark negativ","Neutral"], rows:[
+      {n:"hochwasser", l:"Hochwasser", icon:"water"},
+      {n:"altlasten", l:"Altlasten", icon:"alert"},
+      {n:"verdachtsflaechen", l:"Verdachtsflächen", icon:"shield"},
+      {n:"georisiken", l:"Georisiken", icon:"mountain"},
+      {n:"hochspannungsleitungen", l:"Hochspannungsleitungen", icon:"bolt"}
+    ]}
+  ]
+},
+{
+  t:"Wirtschaftliche Rahmenbedingungen", icon:"euro", short:"Wirtschaft",
+  d:"Investitionsrahmen und geplanter Realisierungshorizont.",
+  f:[
+    {n:"investitionsvolumen", l:"Investitionsvolumen", t:"radio", req:true, w:"full", layout:"cols",
+     o:["unter 5 Mio €","5–10 Mio €","10–25 Mio €","25–50 Mio €","über 50 Mio €"]},
+    {n:"realisierungszeitraum", l:"Realisierungszeitraum", t:"radio", req:true, w:"full", layout:"cols",
+     o:["Sofort","1–3 Jahre","3–5 Jahre","Langfristig"]}
+  ]
+},
+{
+  t:"Ausschlusskriterien", icon:"ban", short:"Ausschluss",
+  d:"Klare KO-Kriterien schärfen die spätere KI-gestützte Standortsuche erheblich.",
+  f:[
+    {n:"ausschlusskriterien", l:"Welche Kriterien schließen einen Standort automatisch aus?", t:"area", w:"full", big:true,
+     ph:"z. B. Hochwasserzone HQ30, Bahnlinie direkt angrenzend, keine Zufahrt für Busse, Grundstück im Grünland ohne Umwidmungsperspektive …"}
+  ]
+},
+{
+  t:"Erfolgsdefinition", icon:"target", short:"Erfolg",
+  d:"Ihre Zielvorstellung dient als Bewertungsmaßstab für Standortvorschläge.",
+  f:[
+    {n:"erfolgsdefinition", l:"Wann wäre ein Standort für Sie ideal?", t:"area", w:"full", big:true,
+     ph:"z. B. Seenähe unter 500 m, ruhige Lage, 2 ha Bauland gewidmet, kooperative Gemeinde, Baubeginn innerhalb von 18 Monaten …"}
+  ]
+},
+{
+  t:"Zusammenfassung", icon:"list", short:"Zusammenfassung",
+  d:"Automatisch generiertes Management Summary aller erfassten Anforderungen.",
+  summary:true, f:[]
+}
+];
+const TOTAL = STEPS.length;
+
+/* ============================================================
+   State
+   ============================================================ */
+let state = {};
+let current = 0;
+let saveTimer = null;
+let touched = {};
+let visited = {0:true};
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v==null?"":v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const allFields = () => STEPS.flatMap(s => s.f);
+const fieldByName = n => allFields().find(f => f.n === n);
+
+function defaults(){
+  const d = {};
+  allFields().forEach(f => {
+    if(f.t === "check") d[f.n] = [];
+    else if(f.t === "sliders"){ d[f.n] = {}; f.items.forEach(i => d[f.n][i.n] = f.def); }
+    else if(f.t === "matrix"){ d[f.n] = {}; f.rows.forEach(r => d[f.n][r.n] = ""); }
+    else d[f.n] = "";
+  });
+  return d;
+}
+function visible(f){ return !f.showIf || f.showIf(state); }
+
+/* ============================================================
+   Rendering: Felder
+   ============================================================ */
+function renderField(f){
+  if(!visible(f)) return "";
+  const cls = "field " + (f.w === "half" ? "" : "full");
+  const lab = f.l ? '<label class="lbl" for="'+f.n+'">'+esc(f.l)+(f.unit?' <span class="hint" style="display:inline">('+esc(f.unit)+')</span>':"")+(f.req?'<span class="req">*</span>':"")+(f.hint?'<span class="hint">'+esc(f.hint)+'</span>':"")+'</label>' : "";
+  const err = '<div class="err" data-err="'+f.n+'">Bitte ausfüllen.</div>';
+  let inner = "";
+
+  if(f.t === "text" || f.t === "tel" || f.t === "email" || f.t === "num"){
+    const type = f.t === "num" ? "number" : (f.t === "area" ? "text" : f.t);
+    inner = '<input type="'+type+'" id="'+f.n+'" name="'+f.n+'" data-f="'+f.n+'" placeholder="'+esc(f.ph||"")+'" value="'+esc(state[f.n])+'"'+(f.t==="num"?' min="0" step="1" inputmode="numeric"':"")+'>';
+  } else if(f.t === "area"){
+    inner = '<textarea id="'+f.n+'" name="'+f.n+'" data-f="'+f.n+'" placeholder="'+esc(f.ph||"")+'"'+(f.big?' style="min-height:190px"':(f.small?' style="min-height:96px"':""))+'>'+esc(state[f.n])+'</textarea>';
+  } else if(f.t === "radio" || f.t === "check"){
+    const multi = f.t === "check";
+    const val = state[f.n];
+    inner = '<div class="optgroup"><div class="opts'+(f.layout==="cols"?" cols":"")+'">'+ f.o.map((o,i) => {
+      const sel = multi ? (val||[]).indexOf(o) > -1 : val === o;
+      return '<label class="opt'+(sel?" sel":"")+'"><input type="'+(multi?"checkbox":"radio")+'" name="'+f.n+'" value="'+esc(o)+'" data-f="'+f.n+'"'+(sel?" checked":"")+'><span>'+esc(o)+'</span></label>';
+    }).join("") + '</div></div>';
+  } else if(f.t === "sliders"){
+    inner = '<div class="sliders">'+ f.items.map(it => {
+      const v = state[f.n][it.n] != null ? state[f.n][it.n] : f.def;
+      const pct = ((v - f.min) / (f.max - f.min)) * 100;
+      return '<div class="slider-row">'
+        + '<div class="slider-top"><span class="name">'+svg(it.icon)+esc(it.l)+'</span>'
+        + '<span class="pill" data-pill="'+f.n+'.'+it.n+'">'+v+' – '+WICHTIG[v]+'</span></div>'
+        + '<input type="range" min="'+f.min+'" max="'+f.max+'" step="1" value="'+v+'" data-slider="'+f.n+'" data-item="'+it.n+'" style="--pct:'+pct+'%">'
+        + '<div class="scale"><span>1 unwichtig</span><span>3</span><span>5 sehr wichtig</span></div></div>';
+    }).join("") + '</div>';
+  } else if(f.t === "matrix"){
+    inner = '<div class="optgroup"><div class="matrix-wrap"><table class="matrix"><thead><tr><th>Kriterium</th>'
+      + f.o.map(o => '<th>'+esc(o)+'</th>').join("") + '</tr></thead><tbody>'
+      + f.rows.map(r => '<tr><td><span class="cellname">'+svg(r.icon)+esc(r.l)+'</span></td>'
+        + f.o.map(o => '<td><input type="radio" name="'+f.n+'__'+r.n+'" value="'+esc(o)+'" data-matrix="'+f.n+'" data-row="'+r.n+'"'+(state[f.n][r.n]===o?" checked":"")+' aria-label="'+esc(r.l+": "+o)+'"></td>').join("")
+        + '</tr>').join("")
+      + '</tbody></table></div></div>';
+  }
+  return '<div class="'+cls+'" data-field="'+f.n+'">'+lab+inner+err+'</div>';
+}
+
+/* ============================================================
+   Rendering: Schritt
+   ============================================================ */
+function renderStep(){
+  const st = STEPS[current];
+  $("#cardIcon").innerHTML = svg(st.icon);
+  $("#cardEyebrow").textContent = "Schritt " + (current+1) + " / " + TOTAL;
+  $("#cardTitle").textContent = st.t;
+  $("#cardDesc").textContent = st.d;
+  const body = $("#cardBody");
+  body.innerHTML = st.summary ? renderSummary() : '<div class="grid">' + st.f.map(renderField).join("") + '</div>';
+  if(!st.summary && st.f.some(f => f.req)) body.insertAdjacentHTML("beforeend",
+    '<div class="note" style="margin-top:22px">Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder.</div>');
+  $("#btnPrev").disabled = current === 0;
+  $("#btnNext").innerHTML = current === TOTAL-1
+    ? 'Als JSON exportieren <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>'
+    : 'Weiter <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+  if(touched[current]) validateStep(current, true);
+  updateProgress();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function updateProgress(){
+  const done = STEPS.map((s,i) => i);
+  let complete = 0;
+  for(let i=0;i<TOTAL;i++) if(stepComplete(i)) complete++;
+  const pct = Math.round(complete / TOTAL * 100);
+  $("#progFill").style.width = pct + "%";
+  $("#progPct").textContent = pct + " % abgeschlossen";
+  $("#progTitle").textContent = "Schritt " + (current+1) + " von " + TOTAL + " · " + STEPS[current].t;
+  $("#stepList").innerHTML = STEPS.map((s,i) =>
+    '<button type="button" data-step="'+i+'" class="'+(i===current?"active ":"")+(stepComplete(i)?"done":"")+'"><span class="num">'+(i+1)+'</span> '+esc(s.short)+'</button>'
+  ).join("");
+  const el = $("#stepList").querySelector(".active");
+  if(el) el.scrollIntoView({block:"nearest", inline:"center", behavior:"smooth"});
+}
+
+/* ============================================================
+   Validierung
+   ============================================================ */
+function fieldErrors(f){
+  if(!visible(f)) return null;
+  const v = state[f.n];
+  if(f.t === "check"){ if(f.req && (!v || !v.length)) return "Bitte mindestens eine Option wählen."; return null; }
+  if(f.t === "matrix"){ if(f.req && f.rows.some(r => !v[r.n])) return "Bitte für jede Zeile eine Auswahl treffen."; return null; }
+  if(f.t === "sliders") return null;
+  const s = (v||"").toString().trim();
+  if(f.req && !s) return "Dieses Feld ist ein Pflichtfeld.";
+  if(!s) return null;
+  if(f.t === "email" && !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(s)) return "Bitte eine gültige E-Mail-Adresse eingeben.";
+  if(f.t === "num" && (isNaN(Number(s)) || Number(s) < 0)) return "Bitte eine gültige Zahl eingeben.";
+  if(f.n === "groesse_ideal" && state.groesse_min && Number(s) < Number(state.groesse_min)) return "Idealgröße darf nicht kleiner als die Mindestgröße sein.";
+  if(f.n === "groesse_max" && state.groesse_ideal && Number(s) < Number(state.groesse_ideal)) return "Maximalgröße darf nicht kleiner als die Idealgröße sein.";
+  return null;
+}
+function hasContent(f){
+  const v = state[f.n];
+  if(f.t === "check") return !!(v && v.length);
+  if(f.t === "matrix") return f.rows.some(r => !!v[r.n]);
+  if(f.t === "sliders") return true;
+  return !!(v || "").toString().trim();
+}
+function stepComplete(i){
+  const st = STEPS[i];
+  if(st.summary) return STEPS.every((s,j) => j === i || stepComplete(j));
+  if(!st.f.every(f => !fieldErrors(f))) return false;
+  // Schritte ohne Pflichtfelder gelten erst als erledigt, wenn sie besucht oder befüllt wurden
+  if(!st.f.some(f => f.req && visible(f))) return !!visited[i] || st.f.some(hasContent);
+  return true;
+}
+function validateStep(i, show){
+  const st = STEPS[i];
+  let ok = true, first = null;
+  st.f.forEach(f => {
+    const msg = fieldErrors(f);
+    const wrap = $('[data-field="'+f.n+'"]');
+    if(msg) ok = false;
+    if(show && wrap){
+      wrap.classList.toggle("invalid", !!msg);
+      const e = wrap.querySelector('[data-err]');
+      if(e && msg) e.textContent = msg;
+      if(msg && !first) first = wrap;
+    }
+  });
+  if(show && first) first.scrollIntoView({block:"center", behavior:"smooth"});
+  return ok;
+}
+
+/* ============================================================
+   Eingaben
+   ============================================================ */
+function onInput(e){
+  const t = e.target;
+  if(t.dataset.f){
+    const f = fieldByName(t.dataset.f);
+    if(!f) return;
+    if(f.t === "check"){
+      const set = new Set(state[f.n] || []);
+      t.checked ? set.add(t.value) : set.delete(t.value);
+      state[f.n] = f.o.filter(o => set.has(o));
+      t.closest(".opt").classList.toggle("sel", t.checked);
+    } else if(f.t === "radio"){
+      state[f.n] = t.value;
+      const grp = t.closest(".opts");
+      grp.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked));
+      if(f.n === "suchgebiet") return afterStructuralChange();
+    } else {
+      state[f.n] = t.value;
+    }
+    revalidate(f);
+  } else if(t.dataset.matrix){
+    state[t.dataset.matrix][t.dataset.row] = t.value;
+    revalidate(fieldByName(t.dataset.matrix));
+  } else if(t.dataset.slider){
+    const f = fieldByName(t.dataset.slider);
+    const v = Number(t.value);
+    state[f.n][t.dataset.item] = v;
+    t.style.setProperty("--pct", ((v - f.min)/(f.max - f.min))*100 + "%");
+    const pill = $('[data-pill="'+f.n+'.'+t.dataset.item+'"]');
+    if(pill) pill.textContent = v + " – " + WICHTIG[v];
+  } else return;
+  scheduleSave();
+  updateProgress();
+}
+function revalidate(f){
+  const wrap = $('[data-field="'+f.n+'"]');
+  if(!wrap || !wrap.classList.contains("invalid")) return;
+  const msg = fieldErrors(f);
+  wrap.classList.toggle("invalid", !!msg);
+  if(msg) wrap.querySelector("[data-err]").textContent = msg;
+}
+function afterStructuralChange(){ renderStep(); scheduleSave(); }
+
+/* ============================================================
+   Speichern / Wiederherstellen
+   ============================================================ */
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 400);
+}
+function save(){
+  try{
+    localStorage.setItem(STORE, JSON.stringify({v:1, savedAt:new Date().toISOString(), step:current, visited:visited, data:state}));
+    const t = new Date();
+    $("#savedInfo").innerHTML = svg("check") + "Automatisch gespeichert um " + t.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+  }catch(err){
+    $("#savedInfo").textContent = "Speichern im Browser nicht möglich.";
+  }
+}
+function loadSaved(){
+  try{ const raw = localStorage.getItem(STORE); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+}
+function applySaved(s){
+  state = Object.assign(defaults(), s.data || {});
+  allFields().forEach(f => {
+    if(f.t === "check" && !Array.isArray(state[f.n])) state[f.n] = [];
+    if((f.t === "sliders" || f.t === "matrix") && (!state[f.n] || typeof state[f.n] !== "object")) state[f.n] = defaults()[f.n];
+  });
+  visited = Object.assign({0:true}, s.visited || {});
+  current = Math.min(Math.max(0, s.step|0), TOTAL-1);
+  visited[current] = true;
+  renderStep();
+}
+
+/* ============================================================
+   Export / Ausgabe
+   ============================================================ */
+function splitList(s){
+  return (s||"").split(/[\n,;]+/).map(x => x.trim()).filter(Boolean);
+}
+function num(v){ const n = Number(v); return v === "" || isNaN(n) ? null : n; }
+
+function buildJSON(){
+  let complete = 0; for(let i=0;i<TOTAL;i++) if(stepComplete(i)) complete++;
+  return {
+    meta:{
+      formular:"Projektaufnahme Touristische Grundstückssuche",
+      version:"1.0",
+      erstellt_am:new Date().toISOString(),
+      fortschritt_prozent:Math.round(complete/TOTAL*100)
+    },
+    projektname:state.projektname || "",
+    unternehmen:state.unternehmen || "",
+    ansprechpartner:{ name:state.ansprechpartner || "", telefon:state.telefon || "", email:state.email || "" },
+    projektstatus:state.projektstatus || "",
+    projektart:state.projektart || [],
+    kurzbeschreibung:state.kurzbeschreibung || "",
+    grundstuecksgroesse:{
+      mindestgroesse_m2:num(state.groesse_min),
+      idealgroesse_m2:num(state.groesse_ideal),
+      maximalgroesse_m2:num(state.groesse_max),
+      erweiterungsflaechen:state.erweiterungsflaechen || "",
+      bebauungsgrad:state.bebauungsgrad || ""
+    },
+    region:{
+      suchgebiet:state.suchgebiet || "",
+      bezirke:state.suchgebiet === "Ganz Oberösterreich" ? BEZIRKE.slice() : (state.bezirke || []),
+      bevorzugte_gemeinden:splitList(state.bevorzugte_gemeinden),
+      ausgeschlossene_gemeinden:splitList(state.ausgeschlossene_gemeinden),
+      max_suchradius_km:num(state.suchradius)
+    },
+    lageanforderungen:Object.assign({}, state.lageanforderungen),
+    verkehrsanbindung:{
+      max_entfernung_autobahn:state.entfernung_autobahn || "",
+      max_entfernung_bahnhof:state.entfernung_bahnhof || "",
+      oeffentlicher_verkehr:state.oeffentlicher_verkehr || "",
+      busanbindung_erforderlich:state.busanbindung || ""
+    },
+    infrastruktur:Object.assign({}, state.infrastruktur),
+    widmung:{
+      bevorzugte_widmungen:state.widmungen || [],
+      umwidmung_zulaessig:state.umwidmung || "",
+      sofortige_baureife_wichtigkeit:state.baureife ? state.baureife.sofortige_baureife : null
+    },
+    grundstueckstyp:{
+      bevorzugter_typ:state.grundstueckstyp || "",
+      bestehende_gebaeude:state.bestehende_gebaeude || "",
+      abbruchobjekte_akzeptabel:state.abbruchobjekte || ""
+    },
+    entwicklungsbereitschaft:{
+      verkaufsbereitschaft_erforderlich:state.verkaufsbereitschaft || "",
+      gemeindeunterstuetzung_erforderlich:state.gemeindeunterstuetzung || "",
+      zusammenarbeit_gemeinde:state.zusammenarbeit_gemeinde || ""
+    },
+    risiken:Object.assign({}, state.risiken),
+    wirtschaftliche_rahmenbedingungen:{
+      investitionsvolumen:state.investitionsvolumen || "",
+      realisierungszeitraum:state.realisierungszeitraum || ""
+    },
+    ausschlusskriterien:state.ausschlusskriterien || "",
+    erfolgsdefinition:state.erfolgsdefinition || ""
+  };
+}
+
+function exportJSON(){
+  const data = buildJSON();
+  const name = (state.projektname || "projektaufnahme").toString().trim()
+    .replace(/[^\wäöüÄÖÜß\- ]+/g,"").replace(/\s+/g,"_").toLowerCase() || "projektaufnahme";
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name + "_" + new Date().toISOString().slice(0,10) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  toast("JSON-Datei wurde exportiert.");
+}
+
+/* ============================================================
+   Management Summary
+   ============================================================ */
+function kv(k, v, cls){
+  const empty = v === null || v === undefined || v === "" || (Array.isArray(v) && !v.length);
+  let out;
+  if(Array.isArray(v) && !empty) out = '<span class="tags">' + v.map(x => '<span class="tag '+(cls||"")+'">'+esc(x)+'</span>').join("") + '</span>';
+  else out = '<span class="v'+(empty?" empty":"")+'">' + (empty ? "keine Angabe" : esc(v)) + '</span>';
+  const many = Array.isArray(v) && !empty && (v.length > 2 || v.join("").length > 26);
+  return '<div class="kv'+(many?" has-tags":"")+'"><span class="k">'+esc(k)+'</span>'+out+'</div>';
+}
+function card(title, icon, inner){
+  return '<div class="sum-card"><h3>'+svg(icon)+esc(title)+'</h3><div class="sum-body">'+inner+'</div></div>';
+}
+function ranking(obj, limit){
+  const items = Object.entries(obj||{}).map(([k,v]) => {
+    const f = STEPS[4].f[0].items.find(i => i.n === k);
+    return {l:f ? f.l : k, v:Number(v)||0};
+  }).sort((a,b) => b.v - a.v);
+  const list = limit ? items.slice(0, limit) : items;
+  return '<div class="rank">' + list.map(i =>
+    '<div class="rank-row"><span>'+esc(i.l)+'</span><span class="rank-bar"><i style="width:'+(i.v/5*100)+'%"></i></span><span class="rank-val">'+i.v+'/5</span></div>'
+  ).join("") + '</div>';
+}
+function matrixTags(fieldName, mapCls){
+  const f = fieldByName(fieldName);
+  return f.rows.map(r => {
+    const v = state[fieldName][r.n];
+    return '<div class="kv"><span class="k">'+esc(r.l)+'</span>' +
+      (v ? '<span class="tags"><span class="tag '+(mapCls[v]||"")+'">'+esc(v)+'</span></span>' : '<span class="v empty">keine Angabe</span>') + '</div>';
+  }).join("");
+}
+function fmt(n){ const x = num(n); return x === null ? "" : x.toLocaleString("de-AT") + " m²"; }
+
+function renderSummary(){
+  const d = buildJSON();
+  const lage = state.lageanforderungen || {};
+  const topLage = Object.entries(lage).filter(([,v]) => v >= 4).map(([k]) => {
+    const it = STEPS[4].f[0].items.find(i => i.n === k); return it ? it.l : k;
+  });
+  const ko = (fieldByName("risiken").rows || []).filter(r => state.risiken[r.n] === "KO-Kriterium").map(r => r.l);
+  const muss = (fieldByName("infrastruktur").rows || []).filter(r => state.infrastruktur[r.n] === "Muss vorhanden").map(r => r.l);
+  let complete = 0; for(let i=0;i<TOTAL;i++) if(stepComplete(i)) complete++;
+
+  const hero = '<div class="sum-hero">'
+    + '<div class="eyebrow">Management Summary</div>'
+    + '<h3>' + esc(state.projektname || "Unbenanntes Projekt") + '</h3>'
+    + '<p>' + esc(state.unternehmen || "Unternehmen nicht angegeben") + (state.projektstatus ? " · " + esc(state.projektstatus) : "") + '</p>'
+    + '<div class="stats">'
+      + '<div class="stat"><div class="lab">Projektart</div><div class="val">' + esc((state.projektart||[]).join(", ") || "–") + '</div></div>'
+      + '<div class="stat"><div class="lab">Idealgröße</div><div class="val">' + esc(fmt(state.groesse_ideal) || "–") + '</div></div>'
+      + '<div class="stat"><div class="lab">Investition</div><div class="val">' + esc(state.investitionsvolumen || "–") + '</div></div>'
+      + '<div class="stat"><div class="lab">Realisierung</div><div class="val">' + esc(state.realisierungszeitraum || "–") + '</div></div>'
+      + '<div class="stat"><div class="lab">Vollständigkeit</div><div class="val">' + Math.round(complete/TOTAL*100) + ' %</div></div>'
+    + '</div></div>';
+
+  const projekt = card("Projektprofil","id",
+      kv("Projektname", state.projektname)
+    + kv("Unternehmen", state.unternehmen)
+    + kv("Ansprechpartner", state.ansprechpartner)
+    + kv("Telefon", state.telefon)
+    + kv("E-Mail", state.email)
+    + kv("Projektstatus", state.projektstatus)
+    + kv("Projektart", state.projektart)
+    + kv("Investitionsvolumen", state.investitionsvolumen)
+    + kv("Realisierungszeitraum", state.realisierungszeitraum)
+    + (state.kurzbeschreibung ? '<div class="subhead" style="margin-top:12px">Kurzbeschreibung</div><div class="freetext">'+esc(state.kurzbeschreibung)+'</div>' : ""));
+
+  const standort = card("Standortprofil","mountain",
+      kv("Suchgebiet", state.suchgebiet)
+    + kv("Bezirke", state.suchgebiet === "Ganz Oberösterreich" ? ["Alle Bezirke Oberösterreichs"] : (state.bezirke||[]))
+    + kv("Bevorzugte Gemeinden", d.region.bevorzugte_gemeinden, "green")
+    + kv("Ausgeschlossene Gemeinden", d.region.ausgeschlossene_gemeinden, "red")
+    + kv("Max. Suchradius", d.region.max_suchradius_km !== null ? d.region.max_suchradius_km + " km" : "")
+    + kv("Flächenbedarf", [fmt(state.groesse_min), fmt(state.groesse_ideal), fmt(state.groesse_max)].filter(Boolean).join(" / ") || "")
+    + kv("Erweiterungsflächen", state.erweiterungsflaechen)
+    + kv("Bebauungsgrad", state.bebauungsgrad)
+    + '<div class="subhead" style="margin-top:12px">Lagekriterien (Gewichtung 1–5)</div>' + ranking(lage)
+    + kv("Prioritäten (≥ 4)", topLage, "green"));
+
+  const infra = card("Infrastrukturprofil","plug",
+      '<div class="subhead" style="margin-top:8px">Technische Erschließung</div>'
+    + matrixTags("infrastruktur", {"Muss vorhanden":"red","Wünschenswert":"amber","Egal":""})
+    + '<div class="subhead" style="margin-top:14px">Verkehrsanbindung</div>'
+    + kv("Max. Entfernung Autobahn", state.entfernung_autobahn)
+    + kv("Max. Entfernung Bahnhof", state.entfernung_bahnhof)
+    + kv("Öffentlicher Verkehr", state.oeffentlicher_verkehr)
+    + kv("Busanbindung erforderlich", state.busanbindung)
+    + kv("Zwingend erforderlich", muss, "red"));
+
+  const risiko = card("Risikoprofil","alert",
+      matrixTags("risiken", {"KO-Kriterium":"red","Stark negativ":"amber","Neutral":"green"})
+    + kv("KO-Kriterien", ko, "red")
+    + (state.ausschlusskriterien ? '<div class="subhead" style="margin-top:12px">Ausschlusskriterien</div><div class="freetext">'+esc(state.ausschlusskriterien)+'</div>' : ""));
+
+  const suche = card("Suchprofil","target",
+      kv("Bevorzugte Widmungen", state.widmungen)
+    + kv("Umwidmung zulässig", state.umwidmung)
+    + kv("Sofortige Baureife", (state.baureife && state.baureife.sofortige_baureife) ? state.baureife.sofortige_baureife + "/5 – " + WICHTIG[state.baureife.sofortige_baureife] : "")
+    + kv("Grundstückstyp", state.grundstueckstyp)
+    + kv("Bestehende Gebäude", state.bestehende_gebaeude)
+    + kv("Abbruchobjekte akzeptabel", state.abbruchobjekte)
+    + kv("Verkaufsbereitschaft", state.verkaufsbereitschaft)
+    + kv("Gemeindeunterstützung", state.gemeindeunterstuetzung)
+    + kv("Zusammenarbeit mit Gemeinde", state.zusammenarbeit_gemeinde)
+    + (state.erfolgsdefinition ? '<div class="subhead" style="margin-top:12px">Erfolgsdefinition</div><div class="freetext">'+esc(state.erfolgsdefinition)+'</div>' : ""));
+
+  const missing = STEPS.map((s,i) => stepComplete(i) ? null : (i+1) + ". " + s.t).filter(Boolean);
+  const hinweis = missing.length
+    ? '<div class="note" style="margin-top:20px"><strong>Noch offen:</strong> ' + esc(missing.join(" · ")) + '</div>'
+    : '<div class="note" style="margin-top:20px;border-left-color:var(--ok)"><strong>Alle Pflichtangaben vollständig.</strong> Der Aufnahmebogen kann exportiert und für die KI-gestützte Standortsuche übergeben werden.</div>';
+
+  return hero + '<div class="sum-grid">' + projekt + standort + infra + risiko + suche + '</div>' + hinweis;
+}
+
+/* ============================================================
+   Demo-Modus
+   ============================================================ */
+const DEMO = {
+  projektname:"Alpin Chalet Resort Salzkammergut",
+  unternehmen:"Alpenblick Projektentwicklung GmbH",
+  ansprechpartner:"Maria Huber",
+  telefon:"+43 664 1234567",
+  email:"m.huber@alpenblick-development.at",
+  projektstatus:"Standortsuche läuft",
+  projektart:["Ferienhotel","Chaletdorf","Resort"],
+  kurzbeschreibung:"Geplant ist ein 4-Sterne-Superior Ferienresort mit 90 Hotelzimmern sowie 24 freistehenden Premium-Chalets, ergänzt um einen 1.800 m² großen Spa- und Wellnessbereich mit Panoramabad. Zielgruppe sind Paare und Familien aus dem DACH-Raum mit Fokus auf Ganzjahresbetrieb (Sommer: Wandern, See, Rad – Winter: Ski, Wellness). Angestrebt wird eine Auslastung von 68 % bei einem durchschnittlichen Zimmerpreis von 240 €.",
+  groesse_min:"12000", groesse_ideal:"25000", groesse_max:"45000",
+  erweiterungsflaechen:"Optional", bebauungsgrad:"Mittel",
+  suchgebiet:"Individuelle Auswahl",
+  bezirke:["Gmunden","Vöcklabruck","Kirchdorf an der Krems"],
+  bevorzugte_gemeinden:"Gmunden, Altmünster, Traunkirchen, Bad Ischl, Ebensee",
+  ausgeschlossene_gemeinden:"Wels, Linz",
+  suchradius:"45",
+  lageanforderungen:{ruhelage:5,aussicht:5,seenaehe:5,berglage:4,waldnaehe:4,ortszentrum:2,touristischer_hotspot:4,freizeitangebot:4,thermennaehe:2,skigebiet:3,radwege:4,wanderwege:5},
+  entfernung_autobahn:"20 km", entfernung_bahnhof:"5 km",
+  oeffentlicher_verkehr:"Wichtig", busanbindung:"Ja",
+  infrastruktur:{strom:"Muss vorhanden",wasser:"Muss vorhanden",kanal:"Muss vorhanden",glasfaser:"Wünschenswert",gas:"Egal",zufahrtsstrasse:"Muss vorhanden"},
+  widmungen:["Kurgebiet","Sondergebiet","Mischgebiet"],
+  umwidmung:"Nur im Einzelfall",
+  baureife:{sofortige_baureife:4},
+  grundstueckstyp:"Beides", bestehende_gebaeude:"Neutral", abbruchobjekte:"Ja",
+  verkaufsbereitschaft:"Ja (KO-Kriterium)", gemeindeunterstuetzung:"Ja", zusammenarbeit_gemeinde:"Hoch",
+  risiken:{hochwasser:"KO-Kriterium",altlasten:"KO-Kriterium",verdachtsflaechen:"Stark negativ",georisiken:"Stark negativ",hochspannungsleitungen:"Stark negativ"},
+  investitionsvolumen:"25–50 Mio €", realisierungszeitraum:"1–3 Jahre",
+  ausschlusskriterien:"• Lage innerhalb einer HQ30-Hochwasserzone\n• Dokumentierte Altlasten oder laufende Sanierungsverfahren\n• Unmittelbar angrenzende Bahnlinie oder Autobahn (Lärmbelastung > 55 dB)\n• Keine Zufahrtsmöglichkeit für Reisebusse\n• Grünlandwidmung ohne belegbare Umwidmungsperspektive\n• Eigentümer ohne Verkaufsabsicht oder ungeklärte Eigentumsverhältnisse",
+  erfolgsdefinition:"Ideal wäre ein rund 25.000 m² großes, weitgehend ebenes Grundstück in Seenähe (< 800 m) mit unverbaubarem Bergblick, ruhiger Lage abseits von Durchzugsverkehr und dennoch fußläufiger Anbindung an einen Ortskern. Die Widmung sollte bereits touristische Nutzung zulassen oder die Gemeinde eine Umwidmung aktiv unterstützen. Vollerschließung (Strom, Wasser, Kanal, Zufahrt) muss gegeben sein, der Eigentümer verkaufsbereit und ein Baustart innerhalb von 18 Monaten realistisch."
+};
+function fillDemo(){
+  state = Object.assign(defaults(), JSON.parse(JSON.stringify(DEMO)));
+  Object.keys(touched).forEach(k => delete touched[k]);
+  visited = {}; STEPS.forEach((s,i) => visited[i] = true);
+  current = 0;
+  renderStep(); save();
+  toast("Demo-Daten wurden geladen.");
+}
+
+/* ============================================================
+   UI-Helfer
+   ============================================================ */
+let toastTimer = null;
+function toast(msg, isErr){
+  const el = $("#toast");
+  el.innerHTML = svg(isErr ? "alert" : "check") + "<span>" + esc(msg) + "</span>";
+  el.classList.toggle("err", !!isErr);
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+}
+let modalCb = null;
+function confirmBox(title, text, cb){
+  $("#modalTitle").textContent = title;
+  $("#modalText").textContent = text;
+  modalCb = cb;
+  $("#modal").classList.add("show");
+}
+function closeModal(){ $("#modal").classList.remove("show"); modalCb = null; }
+
+function goto(i, validateForward){
+  if(validateForward && i > current && !STEPS[current].summary){
+    touched[current] = true;
+    if(!validateStep(current, true)){ toast("Bitte alle Pflichtfelder ausfüllen.", true); return; }
+  }
+  current = Math.min(Math.max(0, i), TOTAL-1);
+  visited[current] = true;
+  renderStep(); scheduleSave();
+}
+
+/* ============================================================
+   Events
+   ============================================================ */
+$("#cardBody").addEventListener("input", onInput);
+$("#cardBody").addEventListener("change", onInput);
+$("#cardBody").addEventListener("submit", e => e.preventDefault());
+$("#stepList").addEventListener("click", e => {
+  const b = e.target.closest("button[data-step]");
+  if(b) goto(Number(b.dataset.step), false);
+});
+$("#btnPrev").addEventListener("click", () => goto(current-1, false));
+$("#btnNext").addEventListener("click", () => {
+  if(current === TOTAL-1){ exportJSON(); return; }
+  goto(current+1, true);
+});
+$("#btnSummary").addEventListener("click", () => goto(TOTAL-1, false));
+$("#btnJson").addEventListener("click", exportJSON);
+$("#btnPrint").addEventListener("click", () => {
+  goto(TOTAL-1, false);
+  setTimeout(() => window.print(), 350);
+});
+$("#btnDemo").addEventListener("click", () => {
+  confirmBox("Demo-Modus starten", "Das Formular wird mit vollständigen Beispieldaten befüllt. Bestehende Eingaben werden überschrieben.", fillDemo);
+});
+$("#btnReset").addEventListener("click", () => {
+  confirmBox("Formular zurücksetzen", "Alle Eingaben und der gespeicherte Zwischenstand werden gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.", () => {
+    try{ localStorage.removeItem(STORE); }catch(e){}
+    state = defaults(); current = 0;
+    visited = {0:true};
+    Object.keys(touched).forEach(k => delete touched[k]);
+    $("#savedInfo").textContent = "";
+    renderStep();
+    toast("Formular wurde zurückgesetzt.");
+  });
+});
+$("#modalOk").addEventListener("click", () => { const cb = modalCb; closeModal(); if(cb) cb(); });
+$("#modalCancel").addEventListener("click", closeModal);
+$("#modal").addEventListener("click", e => { if(e.target.id === "modal") closeModal(); });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeModal();
+  if(e.altKey && e.key === "ArrowRight"){ e.preventDefault(); goto(current+1, true); }
+  if(e.altKey && e.key === "ArrowLeft"){ e.preventDefault(); goto(current-1, false); }
+});
+window.addEventListener("beforeunload", () => { clearTimeout(saveTimer); save(); });
+
+/* ============================================================
+   Init
+   ============================================================ */
+state = defaults();
+renderStep();
+const saved = loadSaved();
+if(saved && saved.data){
+  const dt = saved.savedAt ? new Date(saved.savedAt) : null;
+  const name = saved.data.projektname ? '„' + saved.data.projektname + '“' : "ohne Projektnamen";
+  $("#restoreInfo").textContent = "Stand " + name + (dt ? " vom " + dt.toLocaleDateString("de-AT") + " um " + dt.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"}) + " Uhr" : "") + " – Formular wiederherstellen?";
+  $("#restoreBanner").classList.add("show");
+  $("#btnRestore").addEventListener("click", () => {
+    applySaved(saved);
+    $("#restoreBanner").classList.remove("show");
+    toast("Gespeicherter Stand wurde wiederhergestellt.");
+  });
+  $("#btnDiscard").addEventListener("click", () => {
+    try{ localStorage.removeItem(STORE); }catch(e){}
+    $("#restoreBanner").classList.remove("show");
+    toast("Gespeicherter Stand wurde verworfen.");
+  });
+}
+})();
+</script>
+</body>
+</html>
