@@ -8,5 +8,5 @@ kein Build, kein Server nötig.
 
 - [`grundstueckssuche/`](grundstueckssuche/index.html) — Projektaufnahmebogen
   Touristische Grundstückssuche
-- [`hotelpermit-ooe/`](hotelpermit-ooe/index.html) — HotelPermit OÖ,
+- [`behoerden-app/`](behoerden-app/index.html) — Behörden-App OÖ,
   Behörden-Navigator (Business Upper Austria)

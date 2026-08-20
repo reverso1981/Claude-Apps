@@ -1,4 +1,4 @@
-# HotelPermit OÖ — Behörden-Navigator
+# Behörden-App OÖ — Behörden-Navigator
 
 Single-File-Web-App (Business Upper Austria) zur Ermittlung der zuständigen
 Behörden und der erforderlichen Unterlagen bei Hotel- und Beherbergungs-
