@@ -1,4 +1,4 @@
-# Behörden-App OÖ — Behörden-Navigator
+# Behörden-Navigator OÖ
 
 Single-File-Web-App (Business Upper Austria) zur Ermittlung der zuständigen
 Behörden und der erforderlichen Unterlagen bei Hotel- und Beherbergungs-
