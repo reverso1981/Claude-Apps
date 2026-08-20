@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HotelPermit OÖ — Behörden-Navigator | Business Upper Austria</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --biz-blue:   #294C59;
+  --biz-blue-d: #1d3540;
+  --biz-blue-l: #3a6677;
+  --biz-blue-bg:#e8eef1;
+  --oo-red:     #E30613;
+  --oo-red-d:   #b80510;
+  --oo-red-bg:  #fde8e9;
+  --anthrazit:  #333333;
+  --gray-mid:   #666666;
+  --gray-light: #999999;
+  --bg:         #F4F4F4;
+  --bg-card:    #FFFFFF;
+  --border:     #DEDEDE;
+  --border-mid: #CCCCCC;
+  --radius-btn: 3px;
+  --radius-card:4px;
+  --shadow:     0 1px 4px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-md:  0 3px 12px rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Source Sans 3', 'Source Sans Pro', Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--anthrazit);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.header {
+  background: var(--biz-blue);
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.logo-img {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-img img { width: 40px; height: 40px; object-fit: contain; }
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-size: 13px; font-weight: 700; color: white; }
+.logo-sub { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.3px; text-transform: uppercase; }
+
+.progress-bar { height: 4px; background: var(--border); }
+.progress-fill {
+  height: 100%;
+  background: var(--oo-red);
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
+}
+.screens { flex: 1; position: relative; overflow: hidden; }
+.screen {
+  position: absolute; inset: 0;
+  padding: 24px 20px 100px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateX(32px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.4,0,.2,1);
+}
+.screen.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+.screen.exit-left { opacity: 0; transform: translateX(-32px); }
+
+.welcome-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--biz-blue-bg);
+  border-left: 3px solid var(--biz-blue);
+  color: var(--biz-blue);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+}
+.welcome-title {
+  font-size: 28px; font-weight: 700;
+  color: var(--biz-blue);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.welcome-desc {
+  font-size: 16px;
+  color: var(--gray-mid);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.feature-grid {
+  display: flex; flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+}
+.feature-row {
+  background: var(--bg-card);
+  padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.feature-num {
+  width: 28px; height: 28px;
+  background: var(--biz-blue);
+  color: white;
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-btn);
+  flex-shrink: 0; margin-top: 1px;
+}
+.feature-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--anthrazit); margin-bottom: 2px; }
+.feature-body span { font-size: 13px; color: var(--gray-mid); line-height: 1.4; }
+.biz-badge {
+  background: var(--biz-blue);
+  color: rgba(255,255,255,0.85);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 8px 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: var(--radius-btn);
+}
+.biz-badge::before { content: ''; width: 5px; height: 5px; background: var(--oo-red); border-radius: 50%; }
+
+.q-tag {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--oo-red);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.q-tag::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--oo-red); }
+.q-title { font-size: 22px; font-weight: 700; color: var(--biz-blue); line-height: 1.3; margin-bottom: 6px; }
+.q-hint { font-size: 14px; color: var(--gray-mid); margin-bottom: 20px; line-height: 1.5; }
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex; align-items: flex-start; gap: 12px;
+  box-shadow: var(--shadow);
+}
+.opt:hover { border-color: var(--biz-blue-l); }
+.opt.selected { border-color: var(--biz-blue); background: var(--biz-blue-bg); }
+.opt-radio {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border-mid);
+  flex-shrink: 0; margin-top: 2px;
+  transition: all 0.15s;
+  position: relative;
+}
+.opt.selected .opt-radio { border-color: var(--biz-blue); background: var(--biz-blue); }
+.opt.selected .opt-radio::after {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 6px; height: 6px; background: white; border-radius: 50%;
+}
+.opt-content { flex: 1; min-width: 0; }
+.opt-title { font-size: 14px; font-weight: 600; color: var(--anthrazit); margin-bottom: 2px; }
+.opt-desc { font-size: 12px; color: var(--gray-mid); line-height: 1.4; }
+
+.opt.multi-opt .opt-radio { border-radius: 2px; }
+.opt.multi-opt.selected { border-color: var(--biz-blue); background: var(--biz-blue-bg); }
+.opt.multi-opt.selected .opt-radio { border-color: var(--biz-blue); background: var(--biz-blue); border-radius: 2px; }
+.opt.multi-opt.selected .opt-radio::after {
+  content: '✓'; background: none; border-radius: 0;
+  width: auto; height: auto;
+  font-size: 10px; font-weight: 700; color: white;
+}
+
+.input-group { margin-bottom: 14px; }
+.input-label { display: block; font-size: 12px; font-weight: 700; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+.text-input {
+  width: 100%; background: var(--bg-card);
+  border: 1.5px solid var(--border-mid);
+  border-radius: var(--radius-btn);
+  padding: 12px 14px;
+  font-family: inherit; font-size: 15px; color: var(--anthrazit);
+  outline: none; transition: border-color 0.15s;
+  box-shadow: var(--shadow);
+}
+.text-input::placeholder { color: var(--gray-light); }
+.text-input:focus { border-color: var(--biz-blue); }
+
+.result-hero {
+  background: var(--biz-blue);
+  border-radius: var(--radius-card);
+  padding: 22px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+.result-hero-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+.result-hero-title { font-size: 20px; font-weight: 700; color: white; margin-bottom: 6px; line-height: 1.3; }
+.result-hero-sub { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+.chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 2px; }
+.chip-red { background: rgba(227,6,19,0.3); border-color: rgba(227,6,19,0.5); color: #ffb3b7; }
+
+.sec-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-light); margin-top: 22px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+.alert-card { border-left: 4px solid var(--oo-red); background: var(--oo-red-bg); border-radius: var(--radius-card); padding: 12px 14px; margin-bottom: 10px; }
+.alert-card-title { font-size: 13px; font-weight: 700; color: var(--oo-red-d); margin-bottom: 3px; }
+.alert-card-text { font-size: 12px; color: #7a0007; line-height: 1.5; }
+
+.behoerde-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+.bc-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; border-left: 4px solid var(--biz-blue); }
+.bc-header:hover { background: #f9f9f9; }
+.bc-num { width: 34px; height: 34px; background: var(--biz-blue); color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-btn); flex-shrink: 0; }
+.bc-info { flex: 1; min-width: 0; }
+.bc-name { font-size: 14px; font-weight: 700; color: var(--anthrazit); }
+.bc-role { font-size: 12px; color: var(--gray-mid); margin-top: 1px; }
+.phase-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+.phase-now { background: #fde8e9; color: var(--oo-red-d); }
+.phase-1 { background: #fff3cd; color: #7a5200; }
+.phase-2 { background: var(--biz-blue-bg); color: var(--biz-blue-d); }
+.phase-3 { background: #e9f7ef; color: #1a5e34; }
+.bc-chevron { color: var(--gray-light); font-size: 14px; transition: transform 0.25s; flex-shrink: 0; }
+.bc-chevron.open { transform: rotate(180deg); }
+.bc-body { display: none; border-top: 1px solid var(--border); padding: 16px; background: #fafafa; }
+.bc-body.open { display: block; }
+.bc-section { margin-bottom: 14px; }
+.bc-sec-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-light); margin-bottom: 6px; }
+.bc-detail { font-size: 13px; color: var(--gray-mid); line-height: 1.6; }
+.unterlagen-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.unterlagen-list li { font-size: 12px; color: var(--anthrazit); line-height: 1.4; padding: 6px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-btn); display: flex; align-items: flex-start; gap: 8px; }
+.unterlagen-list li::before { content: '→'; color: var(--biz-blue); font-weight: 700; flex-shrink: 0; }
+.timing-row { display: flex; align-items: flex-start; gap: 8px; background: var(--biz-blue-bg); border-radius: var(--radius-btn); padding: 8px 12px; font-size: 12px; color: var(--biz-blue-d); font-weight: 600; line-height: 1.4; }
+.timing-row::before { content: '⏱'; flex-shrink: 0; }
+.contact-block { background: var(--biz-blue); border-radius: var(--radius-btn); padding: 12px 14px; }
+.contact-line { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.8; }
+.contact-line strong { color: white; font-weight: 700; }
+.tip-card { background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--biz-blue); border-radius: var(--radius-card); padding: 14px 16px; margin-top: 16px; box-shadow: var(--shadow); }
+.tip-title { font-size: 12px; font-weight: 700; color: var(--biz-blue); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+.tip-text { font-size: 13px; color: var(--gray-mid); line-height: 1.6; }
+.tip-text strong { color: var(--anthrazit); font-weight: 700; }
+
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--bg-card); border-top: 1px solid var(--border); padding: 12px 20px 20px; display: flex; gap: 10px; z-index: 100; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); }
+.btn { flex: 1; padding: 14px; border-radius: var(--radius-btn); border: none; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.btn-primary { background: var(--oo-red); color: white; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px; }
+.btn-primary:hover { background: var(--oo-red-d); }
+.btn-primary:disabled { background: var(--border-mid); color: var(--gray-light); cursor: not-allowed; }
+.btn-secondary { background: var(--bg-card); border: 1.5px solid var(--border-mid); color: var(--gray-mid); flex: 0 0 52px; font-size: 18px; }
+.btn-secondary:hover { border-color: var(--biz-blue); color: var(--biz-blue); }
+.btn-restart { width: 100%; background: var(--bg-card); border: 1.5px solid var(--biz-blue); color: var(--biz-blue); font-family: inherit; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; padding: 12px; border-radius: var(--radius-btn); cursor: pointer; transition: background 0.15s; }
+.btn-restart:hover { background: var(--biz-blue-bg); }
+
+.export-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--oo-red);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  margin-top: 12px;
+  box-shadow: var(--shadow);
+}
+.export-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--gray-light);
+  margin-bottom: 10px;
+}
+.export-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-export {
+  flex: 1;
+  min-width: 100px;
+  background: var(--biz-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-export:hover { background: var(--biz-blue-d); }
+.btn-export:nth-child(3) { background: var(--oo-red); }
+.btn-export:nth-child(3):hover { background: var(--oo-red-d); }
+@media print {
+  .bottom-nav, .export-bar, .btn-restart { display: none !important; }
+  .screen { position: static !important; opacity: 1 !important; transform: none !important; padding: 16px !important; }
+  .behoerde-card .bc-body { display: block !important; }
+  body { background: white; }
+}
+</style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_dlc_DocId msdt:dt="string">BIZDRIVE-1776328843-131488</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">f5018ab4-1860-4281-afef-f7b32eab9cc9</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">https://bizup.sharepoint.com/sites/BizDrive/_layouts/15/DocIdRedir.aspx?ID=BIZDRIVE-1776328843-131488, BIZDRIVE-1776328843-131488</mso:_dlc_DocIdUrl>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-logo">
+      <div class="logo-img"><img src="data:image/png;base64,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" alt="Business Upper Austria" /></div>
+      <div class="logo-text">
+        <span class="logo-main">Business Upper Austria</span>
+        <span class="logo-sub">Behörden-Navigator</span>
+      </div>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <div class="screens">
+    <!-- SCREEN 0 -->
+    <div class="screen active" id="screen-0">
+      <div style="margin-top:8px">
+        <div class="welcome-eyebrow">Hotelprojekte in OÖ</div>
+        <h1 class="welcome-title">Ihr persönlicher Behörden-Navigator</h1>
+        <p class="welcome-desc">Beantworten Sie 7 Fragen zu Ihrem Vorhaben. Sie erhalten eine maßgeschneiderte Checkliste mit allen zuständigen Behörden, präzisen Gesetzesverweisen (Oö. ROG 1994, Oö. BauO 1994, Oö. NSchG 2001, UVP-G 2000, WRG 1959, ForstG 1975), Kontakten, Unterlagen und Timing-Empfehlungen.</p>
+        <div class="feature-grid">
+          <div class="feature-row"><div class="feature-num">1</div><div class="feature-body"><strong>Relevante Behörden</strong><span>Nur die tatsächlich zuständigen Stellen für Ihr konkretes Vorhaben</span></div></div>
+          <div class="feature-row"><div class="feature-num">2</div><div class="feature-body"><strong>Unterlagen-Checkliste</strong><span>Welche Dokumente Sie bei welcher Behörde benötigen</span></div></div>
+          <div class="feature-row"><div class="feature-num">3</div><div class="feature-body"><strong>Timing-Empfehlungen</strong><span>Wann Sie welche Behörde im Projektverlauf kontaktieren sollten</span></div></div>
+        </div>
+        <div class="biz-badge">biz-up.at &nbsp;·&nbsp; Innovation is our Business.</div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <div class="screen" id="screen-1">
+      <div class="q-tag">Frage 1 von 7</div>
+      <h2 class="q-title">In welcher Region liegt Ihr Standort?</h2>
+      <p class="q-hint">Die zuständige Bezirkshauptmannschaft hängt von der genauen Lage ab.</p>
+      <div class="options" id="opts-1">
+        <div class="opt" data-q="1" data-val="gmunden" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Salzkammergut / Traunviertel</div><div class="opt-desc">Gmunden, Traunkirchen, Bad Ischl, Hallstatt, Ebensee, St. Wolfgang im Salzkammergut</div></div></div>
+        <div class="opt" data-q="1" data-val="voecklabruck" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Mondseeland / Attersee / Hausruckwald</div><div class="opt-desc">Vöcklabruck, Mondsee, Attersee, Schörfling, Seewalchen</div></div></div>
+        <div class="opt" data-q="1" data-val="kirchdorf" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Pyhrn-Eisenwurzen / Almtal</div><div class="opt-desc">Kirchdorf an der Krems, Kremsmünster, Windischgarsten, Spital am Pyhrn</div></div></div>
+        <div class="opt" data-q="1" data-val="linzland" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Linz-Land (Zentralraum)</div><div class="opt-desc">Traun, Enns, Leonding, Ansfelden — für andere Bezirke (Urfahr, Freistadt, Rohrbach, Steyr-Land, Perg, Wels-Land) ist die jeweils zuständige BH zu kontaktieren</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2 -->
+    <div class="screen" id="screen-2">
+      <div class="q-tag">Frage 2 von 7</div>
+      <h2 class="q-title">Welche Schutzgebiete betrifft Ihr Standort?</h2>
+      <p class="q-hint">Mehrfachauswahl möglich.</p>
+      <div class="options" id="opts-2">
+        <div class="opt multi-opt" data-q="2" data-val="lsg" onclick="toggleMulti(this)"><div class="opt-radio" style="border-radius:2px"></div><div class="opt-content"><div class="opt-title">Landschaftsschutzgebiet (LSG)</div><div class="opt-desc">§ 11 Oö. NSchG 2001 — trifft auf weite Teile des Salzkammerguts zu</div></div></div>
+        <div class="opt multi-opt" data-q="2" data-val="seeufer" onclick="toggleMulti(this)"><div class="opt-radio" style="border-radius:2px"></div><div class="opt-content"><div class="opt-title">Seeuferschutzbereich (500 m landeinwärts)</div><div class="opt-desc">§ 9 Oö. NSchG 2001 — bei allen Seen samt Ufern (Traunsee, Attersee, Mondsee, Wolfgangsee, Hallstättersee u.a.)</div></div></div>
+        <div class="opt multi-opt" data-q="2" data-val="natura2000" onclick="toggleMulti(this)"><div class="opt-radio" style="border-radius:2px"></div><div class="opt-content"><div class="opt-title">Natura 2000 / Europaschutzgebiet</div><div class="opt-desc">§ 24 Oö. NSchG 2001 iVm Art. 6 Abs. 3 FFH-RL 92/43/EWG — strengste Auflagen</div></div></div>
+        <div class="opt multi-opt" data-q="2" data-val="wald" onclick="toggleMulti(this)"><div class="opt-radio" style="border-radius:2px"></div><div class="opt-content"><div class="opt-title">Waldflächen / Rodungsbedarf</div><div class="opt-desc">Wald iSd § 1a ForstG 1975 — Rodungsbewilligung nach § 17 ForstG erforderlich</div></div></div>
+        <div class="opt multi-opt" data-q="2" data-val="keines" onclick="toggleMultiExclusive(this)"><div class="opt-radio" style="border-radius:2px"></div><div class="opt-content"><div class="opt-title">Kein bekanntes Schutzgebiet</div><div class="opt-desc">Standort in Bauland oder gemischtes Gebiet außerhalb Schutzgebiete</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3 -->
+    <div class="screen" id="screen-3">
+      <div class="q-tag">Frage 3 von 7</div>
+      <h2 class="q-title">Um welche Art von Vorhaben handelt es sich?</h2>
+      <p class="q-hint">Art des Eingriffs bestimmt, welche Fachverfahren ausgelöst werden.</p>
+      <div class="options" id="opts-3">
+        <div class="opt" data-q="3" data-val="neubau" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Neubau Hotel / Resort</div><div class="opt-desc">Errichtung auf Freifläche, Grünland oder Bauplatz</div></div></div>
+        <div class="opt" data-q="3" data-val="erweiterung" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Erweiterung / Zubau bestehend</div><div class="opt-desc">Bestehendes Hotel wird ausgebaut</div></div></div>
+        <div class="opt" data-q="3" data-val="umwidmung" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Revitalisierung / Umnutzung</div><div class="opt-desc">Bestandsgebäude wird zu Hotel umgenutzt</div></div></div>
+        <div class="opt" data-q="3" data-val="resort" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Aparthotels / Chalets / Feriendorf</div><div class="opt-desc">Mehrere Einzelgebäude, Erschließungsanlagen</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4 -->
+    <div class="screen" id="screen-4">
+      <div class="q-tag">Frage 4 von 7</div>
+      <h2 class="q-title">Wie groß ist das geplante Projekt?</h2>
+      <p class="q-hint">Projektgröße entscheidet über UVP-Pflicht nach Anhang 1 Z 20 UVP-G 2000.</p>
+      <div class="options" id="opts-4">
+        <div class="opt" data-q="4" data-val="klein" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Bis 100 Betten</div><div class="opt-desc">Unter UVP-Schwellenwerten — keine UVP-Relevanz</div></div></div>
+        <div class="opt" data-q="4" data-val="mittel" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">101–249 Betten</div><div class="opt-desc">Unterhalb Z 20 lit. b — Einzelfallprüfung erst ab 250 Betten in schutzwürdigen Gebieten</div></div></div>
+        <div class="opt" data-q="4" data-val="gross" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">250–499 Betten</div><div class="opt-desc">Z 20 lit. b UVP-G 2000 — Einzelfallprüfung in schutzwürdigen Gebieten (Kat. A/B Anhang 2)</div></div></div>
+        <div class="opt" data-q="4" data-val="uvp" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">500 Betten oder mehr</div><div class="opt-desc">Z 20 lit. a UVP-G 2000 — UVP-pflichtig außerhalb geschlossener Siedlungsgebiete</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5 -->
+    <div class="screen" id="screen-5">
+      <div class="q-tag">Frage 5 von 7</div>
+      <h2 class="q-title">Sind wasserrechtliche Eingriffe geplant?</h2>
+      <p class="q-hint">Relevant für Einleitungen, Entnahmen, Grundwasserbohrungen nach WRG 1959.</p>
+      <div class="options" id="opts-5">
+        <div class="opt" data-q="5" data-val="ja_einleitung" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Ja — Abwassereinleitung in Gewässer</div><div class="opt-desc">§ 32 WRG 1959 — Bewilligung der Einwirkung auf Gewässer</div></div></div>
+        <div class="opt" data-q="5" data-val="ja_bohrung" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Ja — Grundwassernutzung / Tiefbohrung</div><div class="opt-desc">§§ 9 ff. WRG 1959 — Wärmepumpe, eigene Wasserversorgung, Brunnen</div></div></div>
+        <div class="opt" data-q="5" data-val="nein" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Nein — kein wasserrechtlicher Tatbestand</div><div class="opt-desc">Vollständiger Anschluss an bestehende öffentliche Kanalisation</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6 -->
+    <div class="screen" id="screen-6">
+      <div class="q-tag">Frage 6 von 7</div>
+      <h2 class="q-title">Wie ist die Fläche aktuell gewidmet?</h2>
+      <p class="q-hint">Widmungssituation bestimmt, ob die Gemeindeebene zuerst eingeschaltet wird (§§ 21 ff. Oö. ROG 1994).</p>
+      <div class="options" id="opts-6">
+        <div class="opt" data-q="6" data-val="bauland" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Bauland / Sonderwidmung Tourismus</div><div class="opt-desc">§ 23 Abs. 4 Z 1 Oö. ROG 1994 — Widmung passt bereits, weiter zur Baugenehmigung</div></div></div>
+        <div class="opt" data-q="6" data-val="gruenland" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Grünland / Freiland</div><div class="opt-desc">§ 30 Oö. ROG 1994 — Umwidmung über Gemeinderat erforderlich, Vorlauf 12–24 Monate</div></div></div>
+        <div class="opt" data-q="6" data-val="unbekannt" onclick="selectOpt(this)"><div class="opt-radio"></div><div class="opt-content"><div class="opt-title">Noch nicht geprüft / unbekannt</div><div class="opt-desc">Widmung muss aus Flächenwidmungsplan (§ 18 Oö. ROG 1994) erhoben werden</div></div></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 7 -->
+    <div class="screen" id="screen-7">
+      <div class="q-tag">Frage 7 von 7</div>
+      <h2 class="q-title">Projektbezeichnung</h2>
+      <p class="q-hint">Optionale Angabe für Ihre persönliche Checkliste.</p>
+      <div class="input-group"><label class="input-label">Projektname</label><input type="text" class="text-input" id="projectName" placeholder="z. B. Hotel Seeberg Traunkirchen" /></div>
+      <div class="input-group"><label class="input-label">Projektort</label><input type="text" class="text-input" id="projectOrt" placeholder="z. B. Traunkirchen" /></div>
+    </div>
+
+    <!-- SCREEN 8: RESULT -->
+    <div class="screen" id="screen-8"><div id="resultContent"></div></div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none">←</button>
+    <button class="btn btn-primary" id="btnNext" onclick="goNext()">Starten</button>
+  </div>
+</div>
+
+<script>
+const TOTAL=7; let cur=0; let ans={}; let multi={2:[]};
+
+function updateUI(){
+  const pct=cur===0?0:cur>TOTAL?100:Math.round((cur/TOTAL)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+
+  const back=document.getElementById('btnBack'), next=document.getElementById('btnNext');
+  back.style.display=(cur>0&&cur<=TOTAL+1)?'block':'none';
+  next.style.display=cur>TOTAL?'none':'block';
+  if(cur===0){next.textContent='Starten';next.disabled=false;}
+  else if(cur===TOTAL){next.textContent='Checkliste erstellen';next.disabled=false;}
+  else{next.textContent='Weiter';next.disabled=cur===2?multi[2].length===0:!ans[cur];}
+}
+
+function go(f,t){
+  const fe=document.getElementById('screen-'+f), te=document.getElementById('screen-'+t);
+  fe.classList.add('exit-left');fe.classList.remove('active');
+  setTimeout(()=>{fe.classList.remove('exit-left');fe.style.transform='translateX(32px)';},320);
+  te.style.transition='none';te.style.transform='translateX(32px)';te.offsetHeight;te.style.transition='';te.classList.add('active');
+  cur=t;updateUI();
+}
+function goNext(){if(cur===0){go(0,1);return;}if(cur===TOTAL){buildResult();go(cur,TOTAL+1);return;}if(cur<TOTAL)go(cur,cur+1);}
+function goBack(){if(cur>0)go(cur,cur-1);}
+function selectOpt(el){const q=el.dataset.q;document.querySelectorAll(`[data-q="${q}"]`).forEach(o=>o.classList.remove('selected'));el.classList.add('selected');ans[parseInt(q)]=el.dataset.val;updateUI();}
+function toggleMulti(el){document.querySelectorAll('[data-val="keines"]').forEach(o=>o.classList.remove('selected'));multi[2]=multi[2].filter(v=>v!=='keines');const i=multi[2].indexOf(el.dataset.val);if(i>-1){multi[2].splice(i,1);el.classList.remove('selected');}else{multi[2].push(el.dataset.val);el.classList.add('selected');}updateUI();}
+function toggleMultiExclusive(el){document.querySelectorAll('[data-q="2"]').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');multi[2]=['keines'];updateUI();}
+function toggleCard(id){document.getElementById(id).classList.toggle('open');document.getElementById('chev-'+id).classList.toggle('open');}
+
+const BH={
+  gmunden:{name:'BH Gmunden',addr:'Esplanade 10, 4810 Gmunden',tel:'+43 7612 792-0',mail:'bh-gm.post@ooe.gv.at'},
+  voecklabruck:{name:'BH Vöcklabruck',addr:'Sportplatzstraße 1–3, 4840 Vöcklabruck',tel:'+43 7672 702-0',mail:'bh-vb.post@ooe.gv.at'},
+  kirchdorf:{name:'BH Kirchdorf an der Krems',addr:'Garnisonstraße 1, 4560 Kirchdorf an der Krems',tel:'+43 7582 685-0',mail:'bh-ki.post@ooe.gv.at'},
+  linzland:{name:'BH Linz-Land',addr:'Kärntnerstraße 16, 4020 Linz',tel:'+43 732 694 14-0',mail:'bh-ll.post@ooe.gv.at'}
+};
+
+let cc=0;
+function card(name,role,phaseCls,phaseTxt,detail,unterlagen,timing,kName,kAddr,kTel,kMail){
+  cc++;
+  const id='bc-'+cc;
+  const ul=unterlagen.map(u=>`<li>${u}</li>`).join('');
+  const k=kName?`<div class="bc-section"><div class="bc-sec-lbl">Kontakt</div><div class="contact-block"><div class="contact-line"><strong>${kName}</strong></div>${kAddr?`<div class="contact-line">${kAddr}</div>`:''}${kTel?`<div class="contact-line">Tel: ${kTel}</div>`:''}${kMail?`<div class="contact-line">E-Mail: ${kMail}</div>`:''}</div></div>`:'';
+  return `<div class="behoerde-card"><div class="bc-header" onclick="toggleCard('${id}')"><div class="bc-num">${cc}</div><div class="bc-info"><div class="bc-name">${name}</div><div class="bc-role">${role}</div></div><span class="phase-badge ${phaseCls}">${phaseTxt}</span><span class="bc-chevron" id="chev-${id}">▾</span></div><div class="bc-body" id="${id}"><div class="bc-section"><div class="bc-sec-lbl">Was wird geprüft</div><div class="bc-detail">${detail}</div></div><div class="bc-section"><div class="bc-sec-lbl">Erforderliche Unterlagen</div><ul class="unterlagen-list">${ul}</ul></div><div class="bc-section"><div class="bc-sec-lbl">Timing</div><div class="timing-row">${timing}</div></div>${k}</div></div>`;
+}
+
+function buildResult(){
+  cc=0;
+  const bh=BH[ans[1]]||BH.gmunden;
+  const sc=multi[2];
+  const groesse=ans[4],wasser=ans[5],widmung=ans[6];
+  const hasLSG=sc.includes('lsg'),hasSeeufer=sc.includes('seeufer'),hasNatura=sc.includes('natura2000'),hasWald=sc.includes('wald');
+  const needsUVP=groesse==='uvp'||(groesse==='gross'&&(hasLSG||hasSeeufer||hasNatura));
+  const needsWasser=wasser!=='nein';
+  const needsUmwidmung=widmung==='gruenland';
+  const projName=document.getElementById('projectName').value||'Ihr Hotelprojekt';
+  const projOrt=document.getElementById('projectOrt').value;
+
+  let h=`<div class="result-hero"><div class="result-hero-label">Ihre individuelle Checkliste</div><div class="result-hero-title">${projName}</div><div class="result-hero-sub">Generiert auf Basis Ihrer Angaben${projOrt?' · '+projOrt:''} · ${new Date().toLocaleDateString('de-AT')}</div><div class="chips-row"><span class="chip">${bh.name}</span>${hasLSG?'<span class="chip">LSG §11</span>':''}${hasSeeufer?'<span class="chip">Seeufer §9</span>':''}${hasNatura?'<span class="chip">Natura 2000 §24</span>':''}${hasWald?'<span class="chip">Wald (ForstG)</span>':''}${needsUVP?'<span class="chip chip-red">UVP-pflichtig (Z 20)</span>':''}</div></div>`;
+
+  if(needsUmwidmung) h+=`<div class="alert-card"><div class="alert-card-title">Widmung zuerst klären!</div><div class="alert-card-text">Ohne passende Flächenwidmung (§§ 18 ff. Oö. ROG 1994) scheitert jedes weitere Verfahren. Beschluss durch den Gemeinderat als Verordnung gemäß § 36 Oö. ROG 1994; Vorlauf 12–24 Monate.</div></div>`;
+  if(needsUVP) h+=`<div class="alert-card"><div class="alert-card-title">UVP-Pflicht wahrscheinlich (Anhang 1 Z 20 UVP-G 2000)</div><div class="alert-card-text">Sofort Feststellungsantrag nach § 3 Abs. 7 UVP-G 2000 bei der Oö. Landesregierung stellen. Bei Z 20 lit. a (≥ 500 Betten oder ≥ 5 ha außerhalb Siedlungsgebiet) ist die UVP zwingend; bei Z 20 lit. b (≥ 250 Betten in schutzwürdigen Gebieten Kat. A/B Anhang 2) erfolgt Einzelfallprüfung.</div></div>`;
+
+  h+=`<div class="sec-label">Behörden — in empfohlener Reihenfolge</div>`;
+
+  if(needsUmwidmung||widmung==='unbekannt') h+=card('Gemeindeamt','Flächenwidmung / Sonderwidmung Tourismus','phase-now','Sofort',needsUmwidmung?'Umwidmung von Grünland (§ 30 Oö. ROG 1994) in eine geeignete Baulandkategorie, regelmäßig Sonderwidmung Tourismus nach § 23 Abs. 4 Z 1 Oö. ROG 1994. Bei Hotelnutzung mit zugeordneten Ferienwohnungen sind die Infrastrukturanforderungen des § 23 Abs. 7 Oö. ROG 1994 (Rezeption, Speisesäle, Wellness etc.) zwingend einzuhalten; Nutzung für dauernden oder zeitweiligen Wohnbedarf ist unzulässig. Koordination mit Abt. Raumordnung des Landes OÖ erforderlich.':'Widmungssituation aus dem rechtswirksamen Flächenwidmungsplan (§ 18 Oö. ROG 1994) erheben. Bestehende Sonderwidmung Tourismus prüfen (§ 23 Abs. 4 Z 1 Oö. ROG 1994).',['Projektbeschreibung (Kurzfassung)','Lageplan 1:1000 mit Grundstücksgrenzen','Nutzungskonzept Hotel (mit Infrastrukturnachweis bei Ferienwohnungen)','Visualisierung / Architekturskizze','Auszug Flächenwidmungsplan'],'Sofort, noch vor Beauftragung eines Architekten — Vorlauf 12–24 Monate','Gemeindeamt der Standortgemeinde',null,null,null);
+
+  if(hasLSG||hasSeeufer||hasNatura||!sc.includes('keines')){
+    let det='';
+    if(hasSeeufer){
+      det='Seeuferschutzbereich gemäß § 9 Abs. 1 Oö. NSchG 2001 (500 m landeinwärts ab Uferlinie). Bewilligungspflichtige Vorhaben — insbesondere Neu-, Zu- und Umbau von Gebäuden außerhalb geschlossener Ortschaften und außerhalb Gebieten mit rechtswirksamem Bebauungsplan — gemäß § 9 Abs. 2 Oö. NSchG 2001. Amtlicher Naturschutz-SV beurteilt Eingriff in Landschaftsbild und Naturhaushalt. Seeuferschutz-Ausnahmeverordnungen für dicht verbaute Gebiete beachten (LGBl. 112–117/2017 idF 2020).';
+      if(hasNatura) det+=' Zusätzlich Naturverträglichkeitsprüfung nach § 24 Abs. 3 Oö. NSchG 2001.';
+    } else if(hasNatura){
+      det='Naturverträglichkeitsprüfung gemäß § 24 Abs. 3 Oö. NSchG 2001 iVm Art. 6 Abs. 3 FFH-RL 92/43/EWG für Europaschutzgebiete. Bei wesentlicher Beeinträchtigung der Schutzgüter erfolgt Übergang der Zuständigkeit von der BH auf die Oö. Landesregierung (§ 39 Oö. NSchG 2001).';
+    } else if(hasLSG){
+      det='Bewilligungspflicht nach der jeweiligen LSG-Verordnung iVm § 11 Oö. NSchG 2001. Für nicht von der LSG-VO erfasste Vorhaben im Grünland zusätzlich allgemeine Bewilligungspflicht nach § 5 Oö. NSchG 2001 bzw. Anzeigepflicht nach § 6 Oö. NSchG 2001. Amtlicher Naturschutz-SV beurteilt Eingriff in Landschaftsbild und Naturhaushalt.';
+    } else {
+      det='Allgemeine naturschutzrechtliche Bewilligungspflicht im Grünland nach § 5 Oö. NSchG 2001 bzw. Anzeigepflicht nach § 6 Oö. NSchG 2001. Amtlicher Naturschutz-SV beurteilt Eingriff in Landschaftsbild und Naturhaushalt.';
+    }
+    h+=card(`${bh.name} — Naturschutz`,'Naturschutzrechtliche Bewilligung 1. Instanz','phase-1','Phase 1',det,['Lageplan mit Schutzgebietsgrenzen','Detailbeschreibung der Eingriffe in Natur und Landschaft','Fotodokumentation des Standorts','Naturschutzfachliches Gutachten (privater SV)',hasNatura?'FFH-Vorprüfung durch qualifizierten Ökologen':null,hasSeeufer?'Sichtbarkeitsanalyse aus Seeperspektive':null].filter(Boolean),'Präventivauskunft vor Architekturplanung · Antrag mit Einreichplanung',bh.name,bh.addr,bh.tel,bh.mail);
+  }
+
+  if(needsWasser) h+=card(`${bh.name} — Wasserrecht`,'Wasserrechtliche Bewilligung','phase-2','Phase 2',wasser==='ja_bohrung'?'Grundwassernutzung gemäß §§ 9 ff. Wasserrechtsgesetz 1959 (WRG). Bewilligung der Wasserentnahme erforderlich; bei Tiefbohrungen zusätzlich §§ 31c, 32 WRG (Gewässerschutz). Hydrogeologisches Gutachten verpflichtend.':'Einleitung in Gewässer (auch indirekt über Versickerung) bewilligungspflichtig nach § 32 WRG 1959. Direkter Anschluss an öffentliche Kanalisation regelmäßig nicht WRG-bewilligungspflichtig, aber kanalrechtlich anzeigepflichtig.',['Technische Beschreibung der Anlage',wasser==='ja_bohrung'?'Hydrogeologisches Gutachten':'Abwasser-Mengenberechnung und Einleitcharakteristik','Einreichplan Sanitäranlage','Nachweis der ordnungsgemäßen Abwasserentsorgung','Lageplan mit Gewässerabständen'].filter(Boolean),'Parallel zum Naturschutzverfahren — eigener Bescheid',bh.name,bh.addr,bh.tel,bh.mail);
+
+  if(hasWald) h+=card(`${bh.name} — Forstwesen`,'Rodungsbewilligung (ForstG 1975)','phase-2','Phase 2','Rodungsbewilligung gemäß § 17 ForstG 1975 für die dauernde Verwendung von Waldboden zu anderen Zwecken als der Waldkultur. Wald iSd § 1a ForstG 1975 (Mindestfläche 1.000 m², Mindestbreite 10 m). Verpflichtende Ersatzaufforstung bzw. Ausgleichszahlung gemäß § 18 ForstG 1975. Hinweis: Einen eigenen "Waldabstand" kennt die Oö. BauO nicht — es gelten die Mindestabstände nach § 40 Z 1 Oö. BauTG 2013 (3 m zur Grundgrenze; bei Gebäudeteilen über 9 m: 1/3 der Höhe). Im Einzelfall können brandschutzbedingt größere Abstände vorgeschrieben werden.',['Forstfachliches Gutachten zur Rodungsfläche','Lageplan mit eingetragenen Waldgrenzen','Ersatzaufforstungskonzept oder Berechnung der Ausgleichszahlung','Eigentümerzustimmung (Waldeigentümer)'],'Mit Naturschutzverfahren zeitlich abstimmen',bh.name,bh.addr,bh.tel,bh.mail);
+
+  if(needsUVP) h+=card('Amt der OÖ Landesregierung — UVP-Behörde','Umweltverträglichkeitsprüfung (UVP-G 2000)','phase-now','Sofort','Feststellungsantrag nach § 3 Abs. 7 UVP-G 2000 sofort einbringen — schafft Rechtssicherheit über UVP-Pflicht. Tatbestand: Anhang 1 Z 20 UVP-G 2000 (Beherbergungsbetriebe samt Nebeneinrichtungen): lit. a — ≥ 500 Betten oder ≥ 5 ha außerhalb geschlossener Siedlungsgebiete → ordentliche UVP; lit. b — ≥ 250 Betten oder ≥ 2,5 ha in schutzwürdigen Gebieten der Kategorien A oder B (Anhang 2) → Einzelfallprüfung. UVP ist konzentriertes Verfahren (§ 17 UVP-G 2000): alle materiellen Genehmigungen werden in einem Bescheid gebündelt.',['Projektbeschreibung UVP-konform (§ 6 UVP-G 2000)','Beschreibung Ist-Zustand Umwelt (Schutzgüter §1 UVP-G)','Darstellung der Umweltauswirkungen','Alternativenprüfung (Nullvariante, Standortalternativen)','Nicht-technische Zusammenfassung (§ 6 Abs. 1 Z 7 UVP-G)','Maßnahmenkatalog'],'Feststellung vor Einreichplanung · UVP-Verfahren parallel zu allen Fachverfahren','Amt der OÖ Landesregierung, Direktion Umwelt und Klima','Kärntnerstraße 10–12, 4021 Linz','+43 732 7720-0','post@ooe.gv.at');
+
+  if(hasNatura) h+=card('Amt der OÖ Landesregierung — Abt. Naturschutz','Naturverträglichkeitsprüfung / Übergang der Zuständigkeit','phase-1','Phase 1','Bei wesentlicher Beeinträchtigung von Schutzgütern eines Europaschutzgebietes (§ 24 Oö. NSchG 2001) geht die Zuständigkeit gemäß § 39 Oö. NSchG 2001 von der BH auf die Oö. Landesregierung über. Naturverträglichkeitsprüfung nach § 24 Abs. 3 Oö. NSchG 2001 iVm Art. 6 Abs. 3 FFH-RL 92/43/EWG. Vorabgespräch und informelles Präventivgutachten dringend empfohlen.',['FFH-Vorprüfung durch qualifizierten Ökologen','Artenschutzrechtliche Stellungnahme','Verbreitungskarten betroffener Schutzgüter (Anhang II FFH-RL, Anhang I VS-RL)','Alternativenprüfung iSd Art. 6 Abs. 4 FFH-RL'],'Vorabgespräch vor Einreichplanung','Amt der OÖ Landesregierung — Abt. Naturschutz','Bahnhofplatz 1, 4021 Linz','+43 732 7720-11871','n.post@ooe.gv.at');
+
+  h+=card('Gemeinde — Baubehörde','Baubewilligung (Oö. BauO 1994)','phase-3','Phase 3','Baubewilligung gemäß § 24 Oö. BauO 1994 (bewilligungspflichtige Bauvorhaben). Mindestabstände nach § 40 Z 1 Oö. BauTG 2013: 3 m zu Bauplatz-/Nachbargrundgrenzen, bei Gebäudeteilen über 9 m wenigstens 1/3 der Höhe (Hochhäuser: 1/2 der Höhe). Baubewilligung wird erst nach Vorliegen aller Fachgenehmigungen erteilt. Anzeigepflichtige Bauvorhaben siehe § 25 Oö. BauO 1994. Naturschutzrechtliche Vorprüfung im Baubewilligungsverfahren möglich (§ 7 Abs. 3 Oö. NSchG 2001).',['Einreichplanung gemäß § 28 Oö. BauO 1994','Energieausweis (OIB-RL 6)','Statik-Gutachten (§ 3 Oö. BauTG 2013)','Brandschutzkonzept (OIB-RL 2)','Alle Fachbescheide als Beilagen (Naturschutz, Wasser, Forst, ggf. UVP)','Bauplatzbewilligung gemäß §§ 4 ff. Oö. BauO 1994'],'Nach Vorliegen aller Fachbescheide','Gemeindeamt der Standortgemeinde',null,null,null);
+
+  h+=`<div class="tip-card"><div class="tip-title">Empfehlung von Biz-Up</div><div class="tip-text">Beauftragen Sie frühzeitig einen Ziviltechniker für Naturschutz/Raumplanung als Projektkoordinator. Ein professionelles Fachgutachten, das Konflikte offen benennt und Lösungsvorschläge enthält, überzeugt Behörden deutlich mehr als ein optimiertes Gutachten. Vgl. die jüngste Rechtsprechung des LVwG OÖ zu Salzamt Hallstatt (LVwG vom 14./15.05.2026), in der das öffentliche Interesse am UNESCO-Welterbe-Landschaftsbild höher gewichtet wurde als das Tourismusinteresse.<br><br>Für Unterstützung bei der Projektentwicklung: <strong>biz-up.at | +43 732 79810-0</strong></div></div>`;
+  h+=`<div class="export-bar">
+    <div class="export-label">Ergebnis exportieren:</div>
+    <div class="export-btns">
+      <button class="btn-export" onclick="exportPDF()">PDF drucken</button>
+      <button class="btn-export" onclick="exportHTML()">HTML-Datei</button>
+      <button class="btn-export" onclick="exportText(event)">Text kopieren</button>
+    </div>
+  </div>`;
+  h+=`<div class="tip-card" style="border-left-color:var(--gray-light);margin-top:8px"><div class="tip-title" style="color:var(--gray-mid)">Rechtlicher Hinweis</div><div class="tip-text" style="font-size:12px">Diese Checkliste ist eine erste Orientierung auf Basis der zum Stand ${new Date().toLocaleDateString('de-AT')} geltenden Gesetzeslage und ersetzt keine Rechtsberatung im Einzelfall. Verbindlich sind ausschließlich die jeweils gültigen Fassungen von Oö. ROG 1994 (LGBl. Nr. 114/1993 idgF), Oö. BauO 1994 (LGBl. Nr. 66/1994 idgF), Oö. BauTG 2013, Oö. NSchG 2001 (LGBl. Nr. 129/2001 idgF), UVP-G 2000 (BGBl. I Nr. 89/2000 idgF), WRG 1959 (BGBl. Nr. 215/1959 idgF) und ForstG 1975 (BGBl. Nr. 440/1975 idgF) sowie die einschlägigen Durchführungsverordnungen.</div></div>`;
+  h+=`<button class="btn-restart" onclick="restartApp()">↺ Neue Abfrage starten</button><div style="height:32px"></div>`;
+
+  document.getElementById('resultContent').innerHTML=h;
+}
+
+function restartApp(){
+  ans={};multi={2:[]};
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('projectName').value='';
+  document.getElementById('projectOrt').value='';
+  const old=document.getElementById('screen-'+cur);
+  old.classList.remove('active');old.style.transform='translateX(32px)';
+  cur=0;
+  const s0=document.getElementById('screen-0');
+  s0.style.transform='translateX(0)';s0.classList.add('active');
+  document.getElementById('btnNext').style.display='block';
+  updateUI();
+}
+updateUI();
+
+function exportPDF() {
+  // Open all cards first
+  document.querySelectorAll('.bc-body').forEach(b => b.classList.add('open'));
+  document.querySelectorAll('.bc-chevron').forEach(c => c.classList.add('open'));
+  window.print();
+}
+function exportHTML() {
+  const resultHtml = document.getElementById('resultContent').innerHTML;
+  const projName = document.getElementById('projectName').value || 'HotelPermit-Ergebnis';
+  const full = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${projName} — Behörden-Checkliste</title><style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;color:#333}.result-hero{background:#294C59;color:white;padding:20px;border-radius:4px;margin-bottom:20px}.chips-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}.chip{background:rgba(255,255,255,.15);color:white;padding:3px 10px;border-radius:2px;font-size:12px}.chip-red{background:rgba(227,6,19,.3);color:#ffb3b7}.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd}.behoerde-card{border:1px solid #ddd;border-left:4px solid #294C59;margin-bottom:10px;border-radius:4px;overflow:hidden}.bc-header{padding:14px 16px;display:flex;align-items:center;gap:12px}.bc-num{width:34px;height:34px;background:#294C59;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;border-radius:3px}.bc-info{flex:1}.bc-name{font-size:14px;font-weight:700}.bc-role{font-size:12px;color:#666}.phase-badge{font-size:11px;font-weight:700;padding:4px 8px;border-radius:2px}.phase-now{background:#fde8e9;color:#b80510}.phase-1{background:#fff3cd;color:#7a5200}.phase-2{background:#e8eef1;color:#1d3540}.phase-3{background:#e9f7ef;color:#1a5e34}.bc-body{padding:16px;border-top:1px solid #ddd;background:#fafafa}.bc-sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:6px}.unterlagen-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px}.unterlagen-list li{padding:6px 10px;background:white;border:1px solid #ddd;font-size:13px}.timing-row{background:#e8eef1;padding:8px 12px;font-size:12px;color:#1d3540;font-weight:600;border-radius:3px}.contact-block{background:#294C59;color:rgba(255,255,255,.8);padding:12px;border-radius:3px;font-size:12px;margin-top:8px}.alert-card{border-left:4px solid #E30613;background:#fde8e9;padding:12px 14px;margin-bottom:10px;border-radius:4px}.alert-card-title{font-weight:700;color:#b80510;margin-bottom:3px}.tip-card{border:1px solid #ddd;border-left:4px solid #294C59;padding:14px;margin-top:16px}.tip-title{font-size:12px;font-weight:700;color:#294C59;text-transform:uppercase;margin-bottom:6px}h1{color:#294C59;font-size:22px}</style></head><body><h1>Behörden-Checkliste | Business Upper Austria</h1>${resultHtml}</body></html>`;
+  const blob = new Blob([full], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (projName.replace(/\s+/g,'-')) + '-Behoerden-Checkliste.html';
+  a.click();
+}
+function exportText(evt) {
+  const cards = document.querySelectorAll('.behoerde-card');
+  let text = '=== BEHÖRDEN-CHECKLISTE | Business Upper Austria ===\n\n';
+  const title = document.querySelector('.result-hero-title');
+  if(title) text += title.textContent + '\n';
+  const sub = document.querySelector('.result-hero-sub');
+  if(sub) text += sub.textContent + '\n\n';
+  cards.forEach((card, i) => {
+    const name = card.querySelector('.bc-name')?.textContent || '';
+    const role = card.querySelector('.bc-role')?.textContent || '';
+    const phase = card.querySelector('.phase-badge')?.textContent || '';
+    const detail = card.querySelector('.bc-detail')?.textContent || '';
+    const timing = card.querySelector('.timing-row')?.textContent || '';
+    const unterlagen = [...(card.querySelectorAll('.unterlagen-list li') || [])].map(li => '  → ' + li.textContent.replace('→','').trim()).join('\n');
+    const kontakt = card.querySelector('.contact-block')?.textContent?.trim().replace(/\s+/g,' ') || '';
+    text += `--- ${i+1}. ${name} (${phase}) ---\n`;
+    text += `Rolle: ${role}\n`;
+    text += `Prüft: ${detail.trim()}\n`;
+    if(unterlagen) text += `Unterlagen:\n${unterlagen}\n`;
+    text += `Timing: ${timing.trim()}\n`;
+    if(kontakt) text += `Kontakt: ${kontakt}\n`;
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = evt && evt.target;
+    if(!btn) return;
+    const orig = btn.textContent;
+    btn.textContent = '✓ Kopiert!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(err => {
+    alert('Kopieren fehlgeschlagen: ' + err.message + '\n\nText wurde in der Konsole ausgegeben.');
+    console.log(text);
+  });
+}
+</script>
+</body>
+</html>
